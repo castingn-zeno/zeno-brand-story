@@ -1,0 +1,913 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ZENO — 당연했던 지출을 데이터로 바꾸다</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;700;900&family=Sora:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --n9:#060D1F;--n8:#0D1B3E;--b7:#163172;--b6:#1B4AA3;--b5:#2F6DC4;
+  --s4:#4A90D9;--s3:#7BB8EE;--ice:#DCF0FF;--gold:#D4A853;
+  --fog:#F4F6FA;--black:#050505;--white:#FFFFFF;
+  --ease:cubic-bezier(.22,1,.36,1);
+}
+html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+body{font-family:'Pretendard',sans-serif;background:var(--black);color:var(--white);overflow-x:hidden}
+::selection{background:var(--b5);color:#fff}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:999;padding:28px 48px;display:flex;justify-content:space-between;align-items:center;transition:all .5s var(--ease)}
+nav.scrolled{background:rgba(5,5,5,.9);backdrop-filter:blur(16px);padding:18px 48px}
+.nav-logo{font-family:Georgia,serif;font-size:1.3rem;font-weight:700;color:#fff;letter-spacing:.25em;text-decoration:none;opacity:.7;transition:opacity .3s}
+.nav-logo:hover{opacity:1}
+.nav-cta{border:1px solid rgba(212,168,83,.5);color:var(--gold);background:0;padding:10px 28px;font-family:'Pretendard',sans-serif;font-size:.8rem;letter-spacing:.08em;cursor:pointer;border-radius:4px;transition:all .3s var(--ease)}
+.nav-cta:hover{background:var(--gold);color:var(--black);border-color:var(--gold)}
+
+/* SCENE */
+.scene{min-height:100vh;display:flex;align-items:center;justify-content:center;position:relative;padding:40px;overflow:hidden}
+.scene-half{min-height:60vh;display:flex;align-items:center;justify-content:center;position:relative;padding:40px;overflow:hidden}
+.scene-content{max-width:1000px;width:100%;position:relative;z-index:2}
+.center{text-align:center}
+
+/* NOISE TEXTURE OVERLAY */
+.noise::before{
+  content:'';position:absolute;inset:0;z-index:1;pointer-events:none;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.03'/%3E%3C/svg%3E");
+  background-size:128px 128px;
+}
+
+/* GLOW */
+.glow-center::after{
+  content:'';position:absolute;top:-20%;left:50%;transform:translateX(-50%);
+  width:800px;height:800px;border-radius:50%;z-index:0;pointer-events:none;
+  background:radial-gradient(circle,rgba(47,109,196,.12) 0%,transparent 70%);
+}
+.glow-gold::after{
+  content:'';position:absolute;top:-10%;left:50%;transform:translateX(-50%);
+  width:600px;height:600px;border-radius:50%;z-index:0;pointer-events:none;
+  background:radial-gradient(circle,rgba(212,168,83,.08) 0%,transparent 70%);
+}
+
+/* BG */
+.bg-black{background:var(--black)}
+.bg-white{background:var(--white);color:var(--n9)}
+.bg-navy{background:var(--n9)}
+
+/* GRADIENT TRANSITIONS */
+.grad-to-white{
+  height:200px;
+  background:linear-gradient(180deg,var(--black) 0%,var(--white) 100%);
+}
+.grad-to-black{
+  height:200px;
+  background:linear-gradient(180deg,var(--white) 0%,var(--black) 100%);
+}
+.grad-to-navy{
+  height:200px;
+  background:linear-gradient(180deg,var(--black) 0%,var(--n9) 100%);
+}
+.grad-navy-to-black{
+  height:200px;
+  background:linear-gradient(180deg,var(--n9) 0%,var(--black) 100%);
+}
+
+/* TYPOGRAPHY — MASSIVE */
+.t-hero{
+  font-family:'Pretendard',sans-serif;
+  font-size:clamp(3rem,8vw,7.5rem);font-weight:800;line-height:1.2;
+  letter-spacing:-.03em;
+}
+.t-display{
+  font-family:'Pretendard',sans-serif;
+  font-size:clamp(2.2rem,5.5vw,5rem);font-weight:700;line-height:1.25;
+  letter-spacing:-.02em;
+}
+.t-heading{
+  font-family:'Pretendard',sans-serif;
+  font-size:clamp(1.6rem,3.5vw,3rem);font-weight:700;line-height:1.35;
+  letter-spacing:-.01em;
+}
+.t-body{font-size:clamp(1rem,1.6vw,1.25rem);line-height:2;font-weight:400;color:rgba(255,255,255,.7)}
+.bg-white .t-body{color:rgba(6,13,31,.65)}
+.t-label{font-family:'Sora',sans-serif;font-size:.7rem;letter-spacing:.3em;font-weight:600;text-transform:uppercase}
+.t-gold{color:var(--gold)}
+.t-sky{color:var(--s3)}
+.t-blue{color:var(--b5)}
+.t-dim{color:rgba(255,255,255,.35)}
+.bg-white .t-dim{color:rgba(6,13,31,.3)}
+.t-sub{color:rgba(255,255,255,.5)}
+
+/* ANIMATIONS */
+.reveal{opacity:0;transform:translateY(40px);transition:opacity 1s var(--ease),transform 1s var(--ease)}
+.reveal.v{opacity:1;transform:translateY(0)}
+.reveal-mask{clip-path:inset(100% 0 0 0);transition:clip-path 1.2s var(--ease)}
+.reveal-mask.v{clip-path:inset(0)}
+.reveal-blur{opacity:0;filter:blur(12px);transform:scale(.96);transition:all 1.2s var(--ease)}
+.reveal-blur.v{opacity:1;filter:blur(0);transform:scale(1)}
+.reveal-l{opacity:0;transform:translateX(-60px);transition:all 1s var(--ease)}
+.reveal-l.v{opacity:1;transform:translateX(0)}
+.reveal-r{opacity:0;transform:translateX(60px);transition:all 1s var(--ease)}
+.reveal-r.v{opacity:1;transform:translateX(0)}
+.d1{transition-delay:.15s}.d2{transition-delay:.3s}.d3{transition-delay:.45s}
+.d4{transition-delay:.6s}.d5{transition-delay:.75s}.d6{transition-delay:.9s}
+
+/* HERO */
+.hero-line{display:block;opacity:0;transform:translateY(30px);transition:all 1.2s var(--ease);font-family:'Pretendard',sans-serif;font-weight:800;letter-spacing:-.03em}
+.hero-line.show{opacity:1;transform:translateY(0)}
+.scroll-arrow{position:absolute;bottom:48px;left:50%;transform:translateX(-50%);opacity:0;transition:opacity 1.5s}
+.scroll-arrow.show{opacity:.5}
+.scroll-arrow svg{animation:bob 2.5s ease-in-out infinite}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(12px)}}
+
+/* QUOTE */
+.quote-block{
+  max-width:680px;padding:48px;position:relative;
+  border-left:2px solid var(--gold);margin-left:48px;
+}
+.bg-white .quote-block{border-left-color:var(--b5)}
+.quote-text{
+  font-family:'Pretendard',sans-serif;font-size:clamp(1.1rem,2vw,1.4rem);
+  font-weight:400;font-style:normal;line-height:2;
+  color:rgba(255,255,255,.8);
+}
+.bg-white .quote-text{color:rgba(6,13,31,.7)}
+.quote-src{font-family:'Sora',sans-serif;font-size:.75rem;letter-spacing:.1em;color:var(--s3);margin-top:20px}
+.bg-white .quote-src{color:var(--b5)}
+
+/* INDENT */
+.indent{
+  padding-left:32px;border-left:1px solid rgba(255,255,255,.1);
+  display:flex;flex-direction:column;gap:8px;
+}
+.indent p{font-family:'Pretendard',sans-serif;font-size:clamp(1.2rem,2.5vw,1.8rem);color:rgba(255,255,255,.6);line-height:1.7}
+
+/* TERMINAL */
+.terminal{
+  background:rgba(6,13,31,.8);border:1px solid rgba(47,109,196,.15);
+  border-radius:12px;padding:32px;max-width:580px;margin:0 auto;
+  font-family:'SFMono-Regular','Courier New',monospace;backdrop-filter:blur(8px);
+}
+.terminal-bar{display:flex;gap:6px;margin-bottom:20px}
+.terminal-bar span{width:10px;height:10px;border-radius:50%}
+.terminal-bar .r{background:#ff5f57}.terminal-bar .y{background:#febc2e}.terminal-bar .g{background:#28c840}
+.tl{display:block;font-size:.88rem;line-height:2.4;color:#4ade80;min-height:1.5em}
+.tl .cur{display:inline-block;width:2px;height:1em;background:#4ade80;vertical-align:text-bottom;animation:blink .7s step-end infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+
+/* PERSONA CARDS */
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;max-width:960px;margin:0 auto}
+.card{background:var(--white);border-radius:16px;padding:32px 28px;border-top:3px solid var(--b5);box-shadow:0 8px 32px rgba(0,0,0,.08)}
+.card-role{font-family:'Sora',sans-serif;font-size:.68rem;letter-spacing:.2em;font-weight:700;color:var(--b5);margin-bottom:12px}
+.card-text{font-size:.95rem;line-height:1.85;color:var(--n9);font-weight:400}
+
+/* SYSTEMS */
+.sys{font-family:'Pretendard',sans-serif;font-size:clamp(1.4rem,3vw,2.6rem);color:rgba(255,255,255,.45);padding:12px 0;border-bottom:1px solid rgba(255,255,255,.04)}
+
+/* PILLS */
+.pills{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-top:48px}
+.pill{background:rgba(47,109,196,.15);color:var(--s3);border:1px solid rgba(47,109,196,.2);padding:10px 24px;border-radius:100px;font-size:.85rem;font-weight:500}
+
+/* ===== FEATURE SECTION ===== */
+.feat-block{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;max-width:1100px;margin:0 auto}
+.feat-block.rev{direction:rtl}.feat-block.rev>*{direction:ltr}
+.feat-info{max-width:460px}
+.feat-num{font-family:'Sora',sans-serif;font-size:.85rem;color:var(--gold);letter-spacing:.2em;font-weight:700;margin-bottom:16px}
+.feat-title{font-family:'Pretendard',sans-serif;font-size:clamp(1.4rem,2.5vw,2rem);font-weight:700;line-height:1.45;margin-bottom:20px}
+.feat-desc{font-size:1rem;line-height:1.9;color:rgba(255,255,255,.55);margin-bottom:24px;font-weight:300}
+.feat-tags{display:flex;flex-wrap:wrap;gap:8px}
+.feat-tag{font-size:.75rem;color:var(--s3);border:1px solid rgba(123,184,238,.2);border-radius:100px;padding:5px 14px;font-weight:500}
+
+/* APP MOCKUP */
+.app-frame{
+  background:rgba(13,27,62,.5);border:1px solid rgba(47,109,196,.12);
+  border-radius:16px;overflow:hidden;
+  box-shadow:0 25px 60px rgba(0,0,0,.4),0 0 0 1px rgba(255,255,255,.03) inset;
+}
+.app-titlebar{
+  display:flex;align-items:center;gap:8px;padding:14px 18px;
+  background:rgba(255,255,255,.03);border-bottom:1px solid rgba(255,255,255,.05);
+}
+.app-titlebar .dots{display:flex;gap:5px}
+.app-titlebar .dots span{width:8px;height:8px;border-radius:50%}
+.app-titlebar .dots .r{background:#ff5f57}.app-titlebar .dots .y{background:#febc2e}.app-titlebar .dots .g{background:#28c840}
+.app-titlebar .title{font-family:'Sora',sans-serif;font-size:.65rem;color:rgba(255,255,255,.3);margin-left:12px;letter-spacing:.05em}
+.app-body{padding:20px}
+
+/* Governance layers */
+.gov-stack{display:flex;flex-direction:column;gap:12px}
+.gov-lyr{border-radius:8px;padding:16px;opacity:0;transform:translateX(-16px);transition:all .7s var(--ease)}
+.gov-lyr.v{opacity:1;transform:translateX(0)}
+.gov-lyr-0{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06)}
+.gov-lyr-1{background:rgba(47,109,196,.1);border:1px solid rgba(47,109,196,.2)}
+.gov-lyr-2{background:rgba(212,168,83,.08);border:1px solid rgba(212,168,83,.2)}
+.gov-lbl{font-family:'Sora',sans-serif;font-size:.6rem;letter-spacing:.15em;font-weight:700;margin-bottom:6px}
+.gov-lyr-0 .gov-lbl{color:rgba(255,255,255,.3)}
+.gov-lyr-1 .gov-lbl{color:var(--b5)}
+.gov-lyr-2 .gov-lbl{color:var(--gold)}
+.gov-desc{font-size:.78rem;color:rgba(255,255,255,.5);line-height:1.6}
+.gov-row{display:flex;align-items:center;gap:6px;margin-top:6px}
+.gov-icon{width:14px;height:14px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:8px}
+.gov-icon.ok{background:rgba(74,222,128,.15);color:#4ade80}
+.gov-icon.ai{background:rgba(212,168,83,.15);color:var(--gold)}
+.gov-icon.no{background:rgba(255,255,255,.04);color:rgba(255,255,255,.2)}
+.gov-row span{font-size:.72rem;color:rgba(255,255,255,.4)}
+.gov-arrow{text-align:center;padding:2px 0}
+.gov-arrow svg{width:16px;height:16px;stroke:rgba(255,255,255,.15);stroke-width:1.5;fill:none}
+
+/* Dashboard */
+.dash-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px}
+.dash-stat{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.05);border-radius:8px;padding:14px 10px;text-align:center}
+.dash-val{font-family:'Sora',sans-serif;font-size:1.3rem;font-weight:800;margin-bottom:2px}
+.dash-lbl{font-size:.62rem;color:rgba(255,255,255,.35);letter-spacing:.05em}
+.dash-bars{display:flex;flex-direction:column;gap:8px}
+.dash-bar{display:flex;align-items:center;gap:10px}
+.dash-bar-name{font-size:.68rem;color:rgba(255,255,255,.4);min-width:52px;text-align:right}
+.dash-bar-track{flex:1;height:5px;background:rgba(255,255,255,.04);border-radius:3px;overflow:hidden}
+.dash-bar-fill{height:100%;border-radius:3px;transform-origin:left;transform:scaleX(0);transition:transform 1.4s var(--ease)}
+.dash-bar-fill.v{transform:scaleX(1)}
+
+/* Lifecycle */
+.lc-list{display:flex;flex-direction:column;gap:3px}
+.lc-item{
+  display:flex;align-items:center;gap:10px;padding:10px 14px;
+  border-radius:8px;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.04);
+  opacity:0;transform:translateY(8px);transition:all .5s var(--ease);
+}
+.lc-item.v{opacity:1;transform:translateY(0)}
+.lc-item.active{background:rgba(47,109,196,.1);border-color:rgba(47,109,196,.2)}
+.lc-ico{width:28px;height:28px;border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.lc-ico svg{width:14px;height:14px;stroke-width:1.5;fill:none}
+.lc-ico.c1{background:rgba(74,144,217,.15)}.lc-ico.c1 svg{stroke:var(--s4)}
+.lc-ico.c2{background:rgba(47,109,196,.15)}.lc-ico.c2 svg{stroke:var(--b5)}
+.lc-ico.c3{background:rgba(22,49,114,.2)}.lc-ico.c3 svg{stroke:var(--s3)}
+.lc-ico.c4{background:rgba(212,168,83,.1)}.lc-ico.c4 svg{stroke:var(--gold)}
+.lc-txt{flex:1}
+.lc-name{font-size:.78rem;font-weight:600;color:rgba(255,255,255,.75)}
+.lc-sub{font-size:.65rem;color:rgba(255,255,255,.35);margin-top:1px}
+.lc-badge{font-family:'Sora',sans-serif;font-size:.6rem;padding:2px 8px;border-radius:100px;font-weight:600}
+.lc-badge.done{background:rgba(74,222,128,.1);color:#4ade80}
+.lc-badge.ing{background:rgba(212,168,83,.1);color:var(--gold)}
+.lc-badge.wait{color:rgba(255,255,255,.2)}
+.lc-conn{width:1px;height:8px;background:rgba(255,255,255,.06);margin-left:23px}
+
+/* STAT */
+.stat-num{font-family:'Sora',sans-serif;font-size:clamp(4rem,12vw,8rem);font-weight:800;color:var(--gold);line-height:1}
+
+/* EPILOGUE */
+.epi-sub{font-size:1.05rem;color:rgba(123,184,238,.5);line-height:2.2}
+.epi-s1{font-family:'Pretendard',sans-serif;font-size:clamp(1.8rem,4vw,3.2rem);font-weight:700;line-height:1.35}
+.epi-s2{font-family:'Pretendard',sans-serif;font-size:clamp(1.3rem,3vw,2.2rem);color:var(--gold);line-height:1.4}
+.epi-brand{font-family:Georgia,serif;font-size:clamp(4rem,14vw,10rem);font-weight:700;letter-spacing:.35em;line-height:1}
+.cta-row{display:flex;gap:20px;justify-content:center;align-items:center;flex-wrap:wrap}
+.btn-gold{
+  background:var(--gold);color:var(--black);border:0;padding:16px 44px;font-size:1rem;font-weight:700;
+  border-radius:6px;cursor:pointer;font-family:'Pretendard',sans-serif;
+  transition:all .3s var(--ease);
+}
+.btn-gold:hover{background:#e8bc63;transform:translateY(-2px);box-shadow:0 12px 32px rgba(212,168,83,.25)}
+.btn-link{color:rgba(255,255,255,.5);font-size:.9rem;text-decoration:underline;text-underline-offset:4px;background:0;border:0;cursor:pointer;font-family:'Pretendard',sans-serif;transition:color .3s}
+.btn-link:hover{color:var(--s3)}
+
+/* ===== #2 DRAMATIC COLOR TRANSITION ===== */
+.feat-entrance{
+  min-height:100vh;display:flex;align-items:center;justify-content:center;
+  position:relative;overflow:hidden;
+  background:var(--black);
+}
+.feat-entrance .scene-content{position:relative;z-index:3}
+.feat-entrance::before{
+  content:'';position:absolute;inset:0;z-index:1;
+  background:radial-gradient(ellipse 120% 80% at 50% 120%,rgba(6,13,31,1) 0%,transparent 70%);
+  opacity:0;transition:opacity 1.5s ease;
+}
+.feat-entrance.activated::before{opacity:1}
+.feat-entrance::after{
+  content:'';position:absolute;top:50%;left:50%;
+  width:0;height:0;border-radius:50%;z-index:0;
+  background:radial-gradient(circle,var(--n9) 0%,var(--n8) 40%,var(--black) 70%);
+  transform:translate(-50%,-50%);
+  transition:width 2s var(--ease),height 2s var(--ease);
+}
+.feat-entrance.activated::after{width:300vmax;height:300vmax}
+.color-flash{
+  position:absolute;inset:0;z-index:2;pointer-events:none;
+  background:radial-gradient(circle at 50% 50%,rgba(47,109,196,.3) 0%,transparent 60%);
+  opacity:0;animation:none;
+}
+.feat-entrance.activated .color-flash{animation:flashBurst 2s ease-out forwards}
+@keyframes flashBurst{
+  0%{opacity:0;transform:scale(.5)}
+  15%{opacity:1;transform:scale(1)}
+  100%{opacity:0;transform:scale(2.5)}
+}
+.horizon-line{
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  width:0;height:2px;z-index:4;
+  background:linear-gradient(90deg,transparent,var(--gold),var(--s3),var(--gold),transparent);
+  transition:width 1.8s var(--ease);
+  box-shadow:0 0 30px rgba(212,168,83,.4);
+}
+.feat-entrance.activated .horizon-line{width:100vw}
+.feat-entrance-label{
+  font-family:'Sora',sans-serif;font-size:.7rem;letter-spacing:.3em;
+  color:var(--gold);opacity:0;transform:translateY(20px);
+  transition:all 1s var(--ease) .8s;
+}
+.feat-entrance.activated .feat-entrance-label{opacity:1;transform:translateY(0)}
+.feat-entrance-title{
+  font-family:'Pretendard',sans-serif;font-size:clamp(2.2rem,5.5vw,5rem);
+  font-weight:700;line-height:1.25;letter-spacing:-.02em;
+  opacity:0;transform:translateY(30px);
+  transition:all 1.2s var(--ease) 1.2s;
+}
+.feat-entrance.activated .feat-entrance-title{opacity:1;transform:translateY(0)}
+
+/* ===== #3 MOTION GRAPHICS — AI FEEL ===== */
+@keyframes scanLine{
+  0%{top:-2px}100%{top:calc(100% + 2px)}
+}
+@keyframes pulseGlow{
+  0%,100%{box-shadow:0 0 0 0 rgba(47,109,196,.2)}
+  50%{box-shadow:0 0 20px 4px rgba(47,109,196,.15)}
+}
+@keyframes floatParticle{
+  0%,100%{transform:translateY(0) translateX(0);opacity:.3}
+  25%{transform:translateY(-8px) translateX(4px);opacity:.7}
+  50%{transform:translateY(-3px) translateX(-3px);opacity:.5}
+  75%{transform:translateY(-12px) translateX(2px);opacity:.8}
+}
+@keyframes dataStream{
+  0%{background-position:0 0}100%{background-position:0 200px}
+}
+@keyframes neuralPulse{
+  0%,100%{opacity:.15}50%{opacity:.6}
+}
+.app-frame{position:relative;overflow:hidden}
+.app-frame::after{
+  content:'';position:absolute;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent 10%,rgba(74,222,128,.4) 50%,transparent 90%);
+  top:-2px;opacity:0;pointer-events:none;
+}
+.app-frame.scanning::after{opacity:1;animation:scanLine 3s linear infinite}
+.app-frame.scanning{animation:pulseGlow 4s ease-in-out infinite}
+.ai-particles{
+  position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:0;
+}
+.ai-particle{
+  position:absolute;width:3px;height:3px;border-radius:50%;
+  background:var(--s3);opacity:.3;
+  animation:floatParticle 4s ease-in-out infinite;
+}
+.ai-particle:nth-child(2){animation-delay:.8s;left:20%;top:30%;background:var(--gold)}
+.ai-particle:nth-child(3){animation-delay:1.6s;left:70%;top:60%;background:var(--b5)}
+.ai-particle:nth-child(4){animation-delay:2.4s;left:40%;top:80%}
+.ai-particle:nth-child(5){animation-delay:.4s;left:85%;top:20%;background:var(--gold)}
+.ai-particle:nth-child(6){animation-delay:1.2s;left:55%;top:45%;background:var(--b5)}
+.neural-grid{
+  position:absolute;inset:0;pointer-events:none;z-index:0;
+  background-image:
+    radial-gradient(circle 1px,rgba(123,184,238,.08) 1px,transparent 1px);
+  background-size:24px 24px;
+  animation:neuralPulse 5s ease-in-out infinite;
+}
+
+/* ===== #4 AI AGENT CHATBOT ===== */
+.chat-frame{
+  background:rgba(13,27,62,.5);border:1px solid rgba(47,109,196,.12);
+  border-radius:16px;overflow:hidden;position:relative;
+  box-shadow:0 25px 60px rgba(0,0,0,.4),0 0 0 1px rgba(255,255,255,.03) inset;
+}
+.chat-titlebar{
+  display:flex;align-items:center;gap:8px;padding:14px 18px;
+  background:rgba(255,255,255,.03);border-bottom:1px solid rgba(255,255,255,.05);
+}
+.chat-titlebar .dots{display:flex;gap:5px}
+.chat-titlebar .dots span{width:8px;height:8px;border-radius:50%}
+.chat-titlebar .title{font-family:'Sora',sans-serif;font-size:.65rem;color:rgba(255,255,255,.3);margin-left:12px;letter-spacing:.05em}
+.chat-titlebar .ai-badge{
+  margin-left:auto;font-family:'Sora',sans-serif;font-size:.55rem;
+  padding:3px 10px;border-radius:100px;
+  background:linear-gradient(135deg,rgba(47,109,196,.2),rgba(212,168,83,.15));
+  border:1px solid rgba(123,184,238,.2);color:var(--s3);letter-spacing:.08em;
+}
+.chat-body{padding:16px;display:flex;flex-direction:column;gap:10px;min-height:260px}
+.chat-msg{
+  max-width:82%;padding:10px 14px;border-radius:12px;font-size:.78rem;line-height:1.7;
+  opacity:0;transform:translateY(10px);transition:all .5s var(--ease);
+}
+.chat-msg.v{opacity:1;transform:translateY(0)}
+.chat-msg.user{
+  align-self:flex-end;
+  background:rgba(47,109,196,.15);border:1px solid rgba(47,109,196,.2);
+  color:rgba(255,255,255,.8);border-bottom-right-radius:4px;
+}
+.chat-msg.ai{
+  align-self:flex-start;
+  background:rgba(212,168,83,.08);border:1px solid rgba(212,168,83,.15);
+  color:rgba(255,255,255,.75);border-bottom-left-radius:4px;
+}
+.chat-msg.ai .ai-icon{
+  display:inline-block;width:14px;height:14px;border-radius:50%;
+  background:linear-gradient(135deg,var(--b5),var(--gold));
+  vertical-align:middle;margin-right:6px;
+}
+.chat-msg .step-list{
+  margin-top:8px;padding-left:0;list-style:none;
+  display:flex;flex-direction:column;gap:4px;
+}
+.chat-msg .step-list li{
+  font-size:.7rem;color:rgba(255,255,255,.5);
+  padding:4px 8px;border-radius:4px;
+  background:rgba(255,255,255,.03);
+  display:flex;align-items:center;gap:6px;
+}
+.chat-msg .step-list li .step-check{
+  width:12px;height:12px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-size:7px;flex-shrink:0;
+}
+.chat-msg .step-list li .step-check.done{background:rgba(74,222,128,.15);color:#4ade80}
+.chat-msg .step-list li .step-check.active{background:rgba(212,168,83,.15);color:var(--gold);animation:pulseGlow 2s ease-in-out infinite}
+.chat-msg .step-list li .step-check.wait{background:rgba(255,255,255,.04);color:rgba(255,255,255,.2)}
+.chat-input-bar{
+  display:flex;align-items:center;gap:8px;padding:10px 14px;
+  border-top:1px solid rgba(255,255,255,.05);
+  background:rgba(255,255,255,.02);
+}
+.chat-input{
+  flex:1;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);
+  border-radius:8px;padding:8px 12px;font-size:.72rem;color:rgba(255,255,255,.3);
+  font-family:'Pretendard',sans-serif;
+}
+.chat-send{
+  width:28px;height:28px;border-radius:6px;border:none;cursor:pointer;
+  background:linear-gradient(135deg,var(--b5),var(--gold));
+  display:flex;align-items:center;justify-content:center;
+}
+.chat-send svg{width:12px;height:12px;stroke:#fff;stroke-width:2;fill:none}
+.p2p-flow{
+  display:flex;align-items:center;gap:4px;margin-top:8px;flex-wrap:wrap;
+}
+.p2p-node{
+  font-size:.6rem;padding:3px 8px;border-radius:4px;
+  background:rgba(47,109,196,.1);border:1px solid rgba(47,109,196,.15);
+  color:var(--s3);white-space:nowrap;
+}
+.p2p-node.active{
+  background:rgba(212,168,83,.12);border-color:rgba(212,168,83,.25);
+  color:var(--gold);animation:pulseGlow 2s ease-in-out infinite;
+}
+.p2p-arrow{color:rgba(255,255,255,.15);font-size:.55rem}
+
+/* RESPONSIVE */
+@media(max-width:768px){
+  nav{padding:16px 20px}nav.scrolled{padding:12px 20px}
+  .scene,.scene-half{padding:32px 20px}
+  .feat-block{grid-template-columns:1fr;gap:40px}
+  .feat-block.rev{direction:ltr}
+  .cards{grid-template-columns:1fr}
+  .quote-block{margin-left:0;padding:32px 24px}
+  .dash-stats{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="nav"><a class="nav-logo" href="#">ZENO</a><button class="nav-cta">도입 문의</button></nav>
+
+<!-- ===== HERO ===== -->
+<div class="scene bg-black noise glow-center" id="hero">
+  <div class="scene-content center">
+    <span class="hero-line t-hero" id="hl1">우리는 아직,</span>
+    <span class="hero-line t-hero" id="hl2">전사가 뭘 사고 있는지</span>
+    <span class="hero-line t-hero" id="hl3">제때 본 적이 없습니다.</span>
+  </div>
+  <div class="scroll-arrow" id="sa"><svg width="20" height="20" fill="none" viewBox="0 0 24 24"><path d="M12 4v16m0 0l-6-6m6 6l6-6" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+</div>
+
+<!-- SUB HERO -->
+<div class="scene bg-black noise" style="min-height:60vh">
+  <div class="scene-content center">
+    <p class="t-body reveal" style="font-size:clamp(1rem,1.8vw,1.3rem);color:rgba(255,255,255,.35)">돈이 나간 뒤에야 보였습니다.<br>그래서 기준도, 뒷전이 되었습니다.</p>
+  </div>
+</div>
+
+<!-- ===== ACT 1 ===== -->
+<div class="scene bg-black noise glow-center">
+  <div class="scene-content center">
+    <p class="t-label t-sky reveal" style="margin-bottom:40px">ACT 1</p>
+    <p class="t-display reveal d1" style="color:rgba(255,255,255,.85)">매년 수십억을 쓰면서도,<br>어디에 얼마를 쓰는지<br>아무도 모릅니다.</p>
+  </div>
+</div>
+
+<div class="scene-half bg-black noise">
+  <div class="scene-content" style="max-width:700px">
+    <p class="t-body reveal">견적서 3장을 이메일로 받고, 문서에 옮겨 적고,<br>품의서를 출력해서 결재를 올린다.</p>
+    <p class="t-body reveal d1" style="margin-top:12px">발주는 카톡으로. 정산은 한 달 뒤에.</p>
+  </div>
+</div>
+
+<div class="scene bg-black noise">
+  <div class="scene-content center">
+    <p class="t-display reveal" style="color:rgba(255,255,255,.6)">기준은 있었습니다.</p>
+    <p class="t-display reveal d2 t-dim">하지만 적용되지 않았습니다.</p>
+  </div>
+</div>
+
+<div class="scene-half bg-black noise">
+  <div class="scene-content" style="max-width:700px">
+    <div class="indent reveal">
+      <p>관행이 우선,</p>
+      <p>목적이 우선,</p>
+      <p style="color:rgba(255,255,255,.25)">기준은 뒷전이 되기 쉬웠다.</p>
+    </div>
+  </div>
+</div>
+
+<div class="scene bg-black noise glow-gold">
+  <div class="scene-content center">
+    <p class="t-heading reveal" style="color:rgba(255,255,255,.5);margin-bottom:16px">이건 실수가 아닙니다.</p>
+    <p class="t-display reveal-mask d2 t-gold">구매에 거버넌스가 없었던 것입니다.</p>
+  </div>
+</div>
+
+<div class="scene-half bg-black noise">
+  <div class="scene-content">
+    <div class="quote-block reveal-l">
+      <p class="quote-text">"우리 회사가 작년에 MRO에 얼마 썼는지, 저도 모릅니다. 기준이 있긴 한데… 어딘가에 있을 겁니다."</p>
+      <p class="quote-src">— 연매출 2,000억 제조사 CFO</p>
+    </div>
+  </div>
+</div>
+
+<!-- GRADIENT TRANSITION -->
+<div class="grad-to-white"></div>
+
+<!-- ===== ACT 2 ===== -->
+<div class="scene bg-white">
+  <div class="scene-content center">
+    <p class="t-label reveal" style="color:var(--b6);margin-bottom:40px">ACT 2</p>
+    <p class="t-hero reveal d1" style="color:var(--b5)">왜 기업의 돈은<br>나간 뒤에야<br>보이는가?</p>
+  </div>
+</div>
+
+<div class="scene-half bg-white">
+  <div class="scene-content" style="max-width:700px">
+    <p class="t-body reveal">개인 지출은 실시간이 된 지 오래다. 카드 긁는 순간 알림이 온다.</p>
+    <p class="t-body reveal d1" style="margin-top:12px">그런데 수십억이 오가는 기업 구매는? 나가고 나서야 안다.</p>
+    <p class="reveal d2" style="margin-top:32px;font-weight:600;font-size:1.1rem;color:var(--n9)">ZENO는 이걸 뒤집었다.</p>
+  </div>
+</div>
+
+<div class="scene-half bg-white">
+  <div class="scene-content">
+    <div class="terminal reveal-blur" id="term">
+      <div class="terminal-bar"><span class="r"></span><span class="y"></span><span class="g"></span></div>
+      <span class="tl" id="t1"></span>
+      <span class="tl" id="t2"></span>
+      <span class="tl" id="t3"></span>
+    </div>
+  </div>
+</div>
+
+<div class="scene-half bg-white">
+  <div class="scene-content">
+    <div class="cards" id="cards-area">
+      <div class="card reveal d1"><p class="card-role">CFO</p><p class="card-text">더 이상 사후 보고서를 기다리지 않습니다. 돈이 나가기 전에 숫자를 봅니다.</p></div>
+      <div class="card reveal d2"><p class="card-role">담당자</p><p class="card-text">"이 가격이 맞나요?"를 묻지 않아도 됩니다. 근거가 먼저 올라옵니다.</p></div>
+      <div class="card reveal d3"><p class="card-role">팀장</p><p class="card-text">결재 전에 과거 거래와 대안 공급사를 나란히 놓고 판단합니다.</p></div>
+    </div>
+  </div>
+</div>
+
+<div class="scene-half bg-white">
+  <div class="scene-content" style="display:flex;justify-content:flex-end">
+    <div class="quote-block reveal-r">
+      <p class="quote-text">"처음으로 이사회에서 구매 데이터를 근거로 보고할 수 있었습니다. 감이 아니라 숫자로. 그게 완전히 다른 대화를 만들었어요."</p>
+      <p class="quote-src">— 중견 IT기업 CFO</p>
+    </div>
+  </div>
+</div>
+
+<!-- GRADIENT TRANSITION -->
+<div class="grad-to-black"></div>
+
+<!-- ===== ACT 3 ===== -->
+<div class="scene bg-black noise glow-center">
+  <div class="scene-content center">
+    <p class="t-label t-sky reveal" style="margin-bottom:40px">ACT 3</p>
+    <div style="margin-bottom:48px">
+      <p class="sys reveal d1">HR에는 인사 시스템,</p>
+      <p class="sys reveal d2">재무에는 ERP,</p>
+      <p class="sys reveal d3">영업에는 CRM이 있다.</p>
+    </div>
+  </div>
+</div>
+
+<div class="scene bg-black noise glow-gold">
+  <div class="scene-content center">
+    <p class="t-display t-dim reveal">그런데 구매는?</p>
+    <p class="t-hero t-gold reveal-mask d3" style="margin-top:24px">아직도, 감이<br>유일한 시스템입니다.</p>
+  </div>
+</div>
+
+<div class="scene-half bg-black noise">
+  <div class="scene-content center">
+    <p class="t-heading reveal" style="color:rgba(255,255,255,.5)">감이 아닌, 근거로.</p>
+    <p class="t-heading reveal d1" style="color:rgba(255,255,255,.5)">사후 정산이 아닌, 사전 최적화로.</p>
+    <p class="t-heading reveal d2" style="color:rgba(255,255,255,.5);margin-bottom:24px">모든 과정에 기준과 책임을 더합니다.</p>
+    <div style="width:48px;height:2px;background:var(--gold);margin:32px auto" class="reveal d3"></div>
+    <p class="t-body reveal d4" style="margin-top:32px">SAP Ariba가 글로벌 대기업의 거버넌스였다면,</p>
+    <p class="reveal d5" style="font-size:clamp(1rem,2vw,1.3rem);color:var(--s3);margin-top:8px">ZENO는 한국 기업의 구매 거버넌스가 된다.</p>
+    <div class="pills reveal d6">
+      <span class="pill">도입 장벽 없이</span>
+      <span class="pill">AI가 기본값인 채로</span>
+      <span class="pill">구매요청부터 정산까지, 하나로</span>
+    </div>
+  </div>
+</div>
+
+<!-- GRADIENT -->
+<div class="grad-to-navy"></div>
+
+<!-- ===== FEATURE SHOWCASE — DRAMATIC ENTRANCE (#2) ===== -->
+<div class="feat-entrance" id="feat-entrance">
+  <div class="color-flash"></div>
+  <div class="horizon-line"></div>
+  <div class="scene-content center">
+    <p class="feat-entrance-label">ZENO가 만드는 변화</p>
+    <p class="feat-entrance-title" style="margin-top:24px">말이 아닌,<br>실제 시스템으로.</p>
+  </div>
+</div>
+
+<!-- Feature 1 -->
+<div class="scene bg-navy noise" style="padding:80px 48px">
+  <div class="feat-block">
+    <div class="feat-info reveal-l">
+      <p class="feat-num">01</p>
+      <h3 class="feat-title">구매 거버넌스가<br>시스템이 됩니다</h3>
+      <p class="feat-desc">기업의 거버넌스는 원래 있었습니다. 시스템으로 작동하지 않았을 뿐. ZENO는 1단계로 규정을 시스템에 내장하고, 2단계로 AI가 실시간 감시합니다.</p>
+      <div class="feat-tags"><span class="feat-tag">규정 자동 검토</span><span class="feat-tag">승인 이력 추적</span><span class="feat-tag">AI 이상 감지</span></div>
+    </div>
+    <div class="reveal-blur d2">
+      <div class="app-frame" id="gov-mock">
+        <div class="neural-grid"></div>
+        <div class="ai-particles"><div class="ai-particle" style="left:15%;top:25%"></div><div class="ai-particle"></div><div class="ai-particle"></div><div class="ai-particle"></div><div class="ai-particle"></div><div class="ai-particle"></div></div>
+        <div class="app-titlebar"><div class="dots"><span class="r"></span><span class="y"></span><span class="g"></span></div><span class="title">ZENO — Governance Engine</span></div>
+        <div class="app-body">
+          <div class="gov-stack">
+            <div class="gov-lyr gov-lyr-0" id="gl1">
+              <p class="gov-lbl">LEVEL 0 — 기존</p>
+              <p class="gov-desc">구매 규정 문서 (PDF/사내 게시판)</p>
+              <div class="gov-row"><span class="gov-icon no">—</span><span>적용 여부 확인 불가</span></div>
+            </div>
+            <div class="gov-arrow"><svg viewBox="0 0 16 16"><path d="M8 3v10M4 9l4 4 4-4"/></svg></div>
+            <div class="gov-lyr gov-lyr-1" id="gl2">
+              <p class="gov-lbl">STEP 1 — 시스템 내장</p>
+              <p class="gov-desc">규정이 프로세스에 자동 적용</p>
+              <div class="gov-row"><span class="gov-icon ok">✓</span><span>3건 이상 비교견적 필수 → 자동 검증</span></div>
+              <div class="gov-row"><span class="gov-icon ok">✓</span><span>금액별 결재 라인 자동 설정</span></div>
+            </div>
+            <div class="gov-arrow"><svg viewBox="0 0 16 16"><path d="M8 3v10M4 9l4 4 4-4"/></svg></div>
+            <div class="gov-lyr gov-lyr-2" id="gl3">
+              <p class="gov-lbl">STEP 2 — AI 거버넌스</p>
+              <p class="gov-desc">AI가 실시간 모니터링 & 예외 감지</p>
+              <div class="gov-row"><span class="gov-icon ai">◆</span><span>시장 단가 대비 15% 초과 → 자동 경고</span></div>
+              <div class="gov-row"><span class="gov-icon ai">◆</span><span>반복 발주 패턴 감지 → 단가 협상 제안</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Feature 2 — AI 구매 에이전트 (#4 신규) -->
+<div class="scene bg-navy noise" style="padding:80px 48px">
+  <div class="feat-block rev">
+    <div class="feat-info reveal-r">
+      <p class="feat-num">02</p>
+      <h3 class="feat-title">AI 구매 에이전트가<br>프로세스를 함께합니다</h3>
+      <p class="feat-desc">간접구매 300여 종, 모든 구매는 접근 방식이 다릅니다. 구매 의도만 있으면 그 뒤 프로세스는 AI 에이전트와 함께 — 조달부터 계약까지(P2P) 자동으로 진행됩니다.</p>
+      <div class="feat-tags"><span class="feat-tag">AI 구매 챗봇</span><span class="feat-tag">P2P 자동화</span><span class="feat-tag">300+ 카테고리 대응</span></div>
+    </div>
+    <div class="reveal-blur d2">
+      <div class="chat-frame" id="agent-mock">
+        <div class="neural-grid"></div>
+        <div class="ai-particles">
+          <div class="ai-particle" style="left:10%;top:20%"></div>
+          <div class="ai-particle"></div>
+          <div class="ai-particle"></div>
+          <div class="ai-particle"></div>
+          <div class="ai-particle"></div>
+          <div class="ai-particle"></div>
+        </div>
+        <div class="chat-titlebar">
+          <div class="dots"><span class="r"></span><span class="y"></span><span class="g"></span></div>
+          <span class="title">ZENO — AI Purchase Agent</span>
+          <span class="ai-badge">AI AGENT</span>
+        </div>
+        <div class="chat-body" id="chat-body">
+          <div class="chat-msg user" id="cm1">사무용 의자 50개 구매하고 싶습니다</div>
+          <div class="chat-msg ai" id="cm2">
+            <span class="ai-icon"></span>네, MRO/사무가구 카테고리로 진행하겠습니다. 아래 프로세스를 자동으로 시작합니다.
+            <ul class="step-list">
+              <li><span class="step-check done">✓</span>요구사항 분석 완료</li>
+              <li><span class="step-check done">✓</span>적격 공급사 5곳 탐색</li>
+              <li><span class="step-check active">◆</span>비교견적 3건 수집 중...</li>
+              <li><span class="step-check wait">—</span>최적 조건 협상</li>
+              <li><span class="step-check wait">—</span>계약 체결·발주</li>
+            </ul>
+          </div>
+          <div class="chat-msg ai" id="cm3">
+            <span class="ai-icon"></span>비교견적이 도착했습니다. 최저가 기준 단가 ₩89,000 — 시장가 대비 12% 절감 가능합니다.
+            <div class="p2p-flow">
+              <span class="p2p-node">요청</span><span class="p2p-arrow">→</span>
+              <span class="p2p-node">탐색</span><span class="p2p-arrow">→</span>
+              <span class="p2p-node active">견적·비교</span><span class="p2p-arrow">→</span>
+              <span class="p2p-node">협상</span><span class="p2p-arrow">→</span>
+              <span class="p2p-node">계약</span><span class="p2p-arrow">→</span>
+              <span class="p2p-node">발주</span>
+            </div>
+          </div>
+        </div>
+        <div class="chat-input-bar">
+          <div class="chat-input">구매하고 싶은 것을 말씀해 주세요...</div>
+          <button class="chat-send"><svg viewBox="0 0 24 24"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4z"/></svg></button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Feature 3 -->
+<div class="scene bg-navy noise" style="padding:80px 48px">
+  <div class="feat-block">
+    <div class="feat-info reveal-l">
+      <p class="feat-num">03</p>
+      <h3 class="feat-title">전사 구매를<br>하나로 통합합니다</h3>
+      <p class="feat-desc">마켓플레이스, 인소싱, 아웃소싱 — 모든 구매가 한곳에서. 실시간 대시보드로 전사 지출이 즉시 보입니다.</p>
+      <div class="feat-tags"><span class="feat-tag">통합 구매 프로세스</span><span class="feat-tag">실시간 대시보드</span><span class="feat-tag">마켓플레이스 + 소싱</span></div>
+    </div>
+    <div class="reveal-blur d2">
+      <div class="app-frame" id="dash-mock">
+        <div class="neural-grid"></div>
+        <div class="ai-particles"><div class="ai-particle" style="left:12%;top:35%"></div><div class="ai-particle"></div><div class="ai-particle"></div><div class="ai-particle"></div><div class="ai-particle"></div><div class="ai-particle"></div></div>
+        <div class="app-titlebar"><div class="dots"><span class="r"></span><span class="y"></span><span class="g"></span></div><span class="title">ZENO — Spend Dashboard</span></div>
+        <div class="app-body">
+          <div class="dash-stats">
+            <div class="dash-stat"><p class="dash-val t-sky" id="c1">0</p><p class="dash-lbl">이번 달 구매건</p></div>
+            <div class="dash-stat"><p class="dash-val t-gold" id="c2">0</p><p class="dash-lbl">절감 금액 (만원)</p></div>
+            <div class="dash-stat"><p class="dash-val" style="color:#4ade80" id="c3">0%</p><p class="dash-lbl">자동화율</p></div>
+          </div>
+          <div class="dash-bars" id="db">
+            <div class="dash-bar"><span class="dash-bar-name">MRO</span><div class="dash-bar-track"><div class="dash-bar-fill" style="width:72%;background:var(--b5)"></div></div></div>
+            <div class="dash-bar"><span class="dash-bar-name">IT장비</span><div class="dash-bar-track"><div class="dash-bar-fill" style="width:56%;background:var(--s4)"></div></div></div>
+            <div class="dash-bar"><span class="dash-bar-name">인력소싱</span><div class="dash-bar-track"><div class="dash-bar-fill" style="width:41%;background:var(--s3)"></div></div></div>
+            <div class="dash-bar"><span class="dash-bar-name">마케팅</span><div class="dash-bar-track"><div class="dash-bar-fill" style="width:33%;background:var(--gold)"></div></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Feature 4 -->
+<div class="scene bg-navy noise" style="padding:80px 48px">
+  <div class="feat-block">
+    <div class="feat-info reveal-l">
+      <p class="feat-num">04</p>
+      <h3 class="feat-title">공급업체 조사부터<br>지출까지, 원스톱</h3>
+      <p class="feat-desc">공급업체 탐색 → 분석 → 계약 → 운영 → 지출 관리. 흩어졌던 업무가 하나의 플랫폼에서 끊김 없이 연결됩니다.</p>
+      <div class="feat-tags"><span class="feat-tag">공급업체 탐색·분석</span><span class="feat-tag">계약 관리</span><span class="feat-tag">지출 최적화</span></div>
+    </div>
+    <div class="reveal-blur d2">
+      <div class="app-frame" id="lc-mock">
+        <div class="neural-grid"></div>
+        <div class="ai-particles"><div class="ai-particle" style="left:8%;top:40%"></div><div class="ai-particle"></div><div class="ai-particle"></div><div class="ai-particle"></div><div class="ai-particle"></div><div class="ai-particle"></div></div>
+        <div class="app-titlebar"><div class="dots"><span class="r"></span><span class="y"></span><span class="g"></span></div><span class="title">ZENO — Supplier Lifecycle</span></div>
+        <div class="app-body">
+          <div class="lc-list" id="lc">
+            <div class="lc-item" id="lc1">
+              <div class="lc-ico c1"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/></svg></div>
+              <div class="lc-txt"><p class="lc-name">공급업체 탐색·조사</p><p class="lc-sub">AI가 조건에 맞는 공급사를 자동 탐색</p></div>
+              <span class="lc-badge done">완료</span>
+            </div>
+            <div class="lc-conn"></div>
+            <div class="lc-item" id="lc2">
+              <div class="lc-ico c1"><svg viewBox="0 0 24 24"><path d="M3 12h4l3-9 4 18 3-9h4"/></svg></div>
+              <div class="lc-txt"><p class="lc-name">비교 분석·평가</p><p class="lc-sub">가격·실적·신용도 비교 리포트 자동 생성</p></div>
+              <span class="lc-badge done">완료</span>
+            </div>
+            <div class="lc-conn"></div>
+            <div class="lc-item active" id="lc3">
+              <div class="lc-ico c2"><svg viewBox="0 0 24 24"><path d="M12 20h9M16.5 3.5a2.12 2.12 0 013 3L7 19l-4 1 1-4z"/></svg></div>
+              <div class="lc-txt"><p class="lc-name">계약 체결·관리</p><p class="lc-sub">전자계약, 갱신 알림, 조건 변경 추적</p></div>
+              <span class="lc-badge ing">진행 중</span>
+            </div>
+            <div class="lc-conn"></div>
+            <div class="lc-item" id="lc4">
+              <div class="lc-ico c3"><svg viewBox="0 0 24 24"><path d="M23 4l-6 6-4-4-8 8"/><path d="M17 4h6v6"/></svg></div>
+              <div class="lc-txt"><p class="lc-name">운영·발주·정산</p><p class="lc-sub">자동 발주, 청구서 대사, 과다 청구 탐지</p></div>
+              <span class="lc-badge wait">대기</span>
+            </div>
+            <div class="lc-conn"></div>
+            <div class="lc-item" id="lc5">
+              <div class="lc-ico c4"><svg viewBox="0 0 24 24"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg></div>
+              <div class="lc-txt"><p class="lc-name">지출 분석·최적화</p><p class="lc-sub">카테고리별 지출 분석, AI 절감 기회 도출</p></div>
+              <span class="lc-badge wait">대기</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- STAT -->
+<div class="scene bg-navy noise glow-gold" style="min-height:80vh">
+  <div class="scene-content center">
+    <p class="stat-num reveal" id="stat-n">0%</p>
+    <p class="t-body reveal d2" style="margin-top:24px;color:rgba(255,255,255,.45)">업무 효율화는 자연스럽게 따라오고,<br>평균 10% 비용 절감이 실현됩니다.</p>
+  </div>
+</div>
+
+<div class="grad-navy-to-black"></div>
+
+<!-- ===== EPILOGUE ===== -->
+<div class="scene bg-black noise" style="min-height:60vh">
+  <div class="scene-content center">
+    <p class="epi-sub reveal">이제 보인다.</p>
+    <p class="epi-sub reveal d1" style="color:rgba(123,184,238,.3)">무엇을 사는지. 왜 그 가격인지. 누가 승인했는지.</p>
+  </div>
+</div>
+
+<div class="scene bg-black noise glow-gold">
+  <div class="scene-content center">
+    <p class="epi-s1 reveal">감으로 사던 시대는 끝났습니다.</p>
+    <p class="epi-s2 reveal d2" style="margin-top:20px">당연했던 지출을 데이터로 바꿉니다.</p>
+    <p class="epi-brand reveal d4" style="margin-top:64px">ZENO</p>
+    <div class="cta-row reveal d6" style="margin-top:64px">
+      <button class="btn-gold">지금 무료로 시작하기</button>
+      <button class="btn-link">데모 신청</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== JS ===== -->
+<script>
+const nav=document.getElementById('nav');
+window.addEventListener('scroll',()=>nav.classList.toggle('scrolled',scrollY>60));
+
+/* Hero */
+window.addEventListener('load',()=>{
+  ['hl1','hl2','hl3'].forEach((id,i)=>setTimeout(()=>document.getElementById(id).classList.add('show'),500+i*800));
+  setTimeout(()=>document.getElementById('sa').classList.add('show'),500+3*800+600);
+});
+
+/* Scroll reveals */
+const io=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('v')})},{threshold:.15});
+document.querySelectorAll('.reveal,.reveal-mask,.reveal-blur,.reveal-l,.reveal-r').forEach(el=>io.observe(el));
+
+/* Terminal */
+const tl=['> 구매요청 접수 → AI 시장 단가 비교 중...','> 과거 거래 데이터 분석 중...','> 최적 공급사 3곳 추천 완료 ✓'];
+let td=false;
+function ty(el,txt,cb){let i=0;el.innerHTML='<span class="cur"></span>';const iv=setInterval(()=>{if(i<txt.length){el.innerHTML=txt.slice(0,++i)+'<span class="cur"></span>'}else{el.innerHTML=txt;clearInterval(iv);cb&&cb()}},38)}
+new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting&&!td){td=true;setTimeout(()=>ty(document.getElementById('t1'),tl[0],()=>setTimeout(()=>ty(document.getElementById('t2'),tl[1],()=>setTimeout(()=>ty(document.getElementById('t3'),tl[2]),200)),200)),200)}})},{threshold:.4}).observe(document.getElementById('term'));
+
+/* Governance layers */
+new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){['gl1','gl2','gl3'].forEach((id,i)=>setTimeout(()=>document.getElementById(id).classList.add('v'),300+i*500))}})},{threshold:.3,once:true}).observe(document.getElementById('gov-mock'));
+
+/* Dashboard counters */
+function cnt(el,end,sfx,dur){const s=performance.now();(function t(n){const p=Math.min((n-s)/dur,1);const v=1-Math.pow(1-p,3);el.textContent=Math.round(v*end).toLocaleString()+sfx;p<1&&requestAnimationFrame(t)})(s)}
+let dd=false;
+new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting&&!dd){dd=true;cnt(document.getElementById('c1'),247,'건',1800);cnt(document.getElementById('c2'),3842,'',1800);cnt(document.getElementById('c3'),82,'%',1800);setTimeout(()=>document.querySelectorAll('.dash-bar-fill').forEach(b=>b.classList.add('v')),400)}})},{threshold:.3}).observe(document.getElementById('dash-mock'));
+
+/* Lifecycle */
+new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){['lc1','lc2','lc3','lc4','lc5'].forEach((id,i)=>setTimeout(()=>document.getElementById(id).classList.add('v'),150+i*250))}})},{threshold:.3}).observe(document.getElementById('lc-mock'));
+
+/* Stat counter */
+let sd=false;
+new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting&&!sd){sd=true;cnt(document.getElementById('stat-n'),10,'%',2200)}})},{threshold:.4}).observe(document.getElementById('stat-n'));
+
+/* #2 — Feature entrance dramatic color transition */
+let fe=false;
+new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting&&!fe){fe=true;e.target.classList.add('activated')}})},{threshold:.35}).observe(document.getElementById('feat-entrance'));
+
+/* #3 — App frame scan line trigger */
+document.querySelectorAll('.app-frame, .chat-frame').forEach(frame=>{
+  new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('scanning')})},{threshold:.3}).observe(frame);
+});
+
+/* #4 — AI Agent chat animation */
+let chatDone=false;
+new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting&&!chatDone){chatDone=true;
+  ['cm1','cm2','cm3'].forEach((id,i)=>setTimeout(()=>{const el=document.getElementById(id);if(el)el.classList.add('v')},300+i*700));
+}})},{threshold:.3}).observe(document.getElementById('agent-mock'));
+</script>
+</body>
+</html>
