@@ -640,7 +640,7 @@ nav.scrolled{background:rgba(5,5,5,.9);backdrop-filter:blur(16px);padding:18px 4
 </div>
 
 <div class="scene-half bg-black noise">
-  <div class="scene-content" style="max-width:700px">
+  <div class="scene-content center" style="max-width:700px">
     <p class="t-body reveal">견적서 3장을 이메일로 받고, 문서에 옮겨 적고,<br>품의서를 출력해서 결재를 올린다.</p>
     <p class="t-body reveal d1" style="margin-top:12px">발주는 카톡으로. 정산은 한 달 뒤에.</p>
   </div>
@@ -654,8 +654,8 @@ nav.scrolled{background:rgba(5,5,5,.9);backdrop-filter:blur(16px);padding:18px 4
 </div>
 
 <div class="scene-half bg-black noise">
-  <div class="scene-content" style="max-width:700px">
-    <div class="indent reveal">
+  <div class="scene-content center" style="max-width:700px">
+    <div class="indent reveal" style="border-left:none;padding-left:0;align-items:center">
       <p>관행이 우선,</p>
       <p>목적이 우선,</p>
       <p style="color:rgba(255,255,255,.25)">기준은 뒷전이 되기 쉬웠다.</p>
@@ -691,10 +691,10 @@ nav.scrolled{background:rgba(5,5,5,.9);backdrop-filter:blur(16px);padding:18px 4
 </div>
 
 <div class="scene-half bg-white">
-  <div class="scene-content" style="max-width:700px">
+  <div class="scene-content center" style="max-width:700px">
     <p class="t-body reveal">개인 지출은 실시간이 된 지 오래다. 카드 긁는 순간 알림이 온다.</p>
     <p class="t-body reveal d1" style="margin-top:12px">그런데 수십억이 오가는 기업 구매는? 나가고 나서야 안다.</p>
-    <p class="reveal d2" style="margin-top:32px;font-weight:600;font-size:1.1rem;color:var(--n9)">ZENO는 이걸 뒤집었다.</p>
+    <p class="reveal d2" style="margin-top:32px;font-weight:600;font-size:1.1rem;color:var(--n9)">ZENO는 이걸 뒤집었습니다.</p>
   </div>
 </div>
 
@@ -916,44 +916,44 @@ nav.scrolled{background:rgba(5,5,5,.9);backdrop-filter:blur(16px);padding:18px 4
   <div class="feat-block">
     <div class="feat-info reveal-l">
       <p class="feat-num">04</p>
-      <h3 class="feat-title">공급업체 조사부터<br>지출까지, 원스톱</h3>
-      <p class="feat-desc">공급업체 탐색 → 분석 → 계약 → 운영 → 지출 관리. 흩어졌던 업무가 하나의 플랫폼에서 끊김 없이 연결됩니다.</p>
-      <div class="feat-tags"><span class="feat-tag">공급업체 탐색·분석</span><span class="feat-tag">계약 관리</span><span class="feat-tag">지출 최적화</span></div>
+      <h3 class="feat-title">구매요청부터 정산까지,<br>P2P 프로세스 통합</h3>
+      <p class="feat-desc">Purchase Request에서 시작해 조달 → 계약 → 발주 → 검수 → 정산까지. 흩어졌던 P2P(Procure-to-Pay) 전체가 하나의 플랫폼에서 끊김 없이 연결됩니다.</p>
+      <div class="feat-tags"><span class="feat-tag">PR 구매요청</span><span class="feat-tag">P2P 통합</span><span class="feat-tag">조달→정산 원스톱</span></div>
     </div>
     <div class="reveal-blur d2">
       <div class="app-frame" id="lc-mock">
         <div class="neural-grid"></div>
         <div class="ai-particles"><div class="ai-particle" style="left:8%;top:40%"></div><div class="ai-particle"></div><div class="ai-particle"></div><div class="ai-particle"></div><div class="ai-particle"></div><div class="ai-particle"></div></div>
-        <div class="app-titlebar"><div class="dots"><span class="r"></span><span class="y"></span><span class="g"></span></div><span class="title">ZENO — Supplier Lifecycle</span></div>
+        <div class="app-titlebar"><div class="dots"><span class="r"></span><span class="y"></span><span class="g"></span></div><span class="title">ZENO — P2P Process</span></div>
         <div class="app-body">
           <div class="lc-list" id="lc">
             <div class="lc-item" id="lc1">
-              <div class="lc-ico c1"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/></svg></div>
-              <div class="lc-txt"><p class="lc-name">공급업체 탐색·조사</p><p class="lc-sub">AI가 조건에 맞는 공급사를 자동 탐색</p></div>
+              <div class="lc-ico c1"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg></div>
+              <div class="lc-txt"><p class="lc-name">PR 구매요청</p><p class="lc-sub">Purchase Request 등록, 예산 확인, 승인 라인 자동 설정</p></div>
               <span class="lc-badge done">완료</span>
             </div>
             <div class="lc-conn"></div>
             <div class="lc-item" id="lc2">
-              <div class="lc-ico c1"><svg viewBox="0 0 24 24"><path d="M3 12h4l3-9 4 18 3-9h4"/></svg></div>
-              <div class="lc-txt"><p class="lc-name">비교 분석·평가</p><p class="lc-sub">가격·실적·신용도 비교 리포트 자동 생성</p></div>
+              <div class="lc-ico c1"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/></svg></div>
+              <div class="lc-txt"><p class="lc-name">조달·소싱</p><p class="lc-sub">공급사 탐색, 비교견적 수집, AI 최적 추천</p></div>
               <span class="lc-badge done">완료</span>
             </div>
             <div class="lc-conn"></div>
             <div class="lc-item active" id="lc3">
               <div class="lc-ico c2"><svg viewBox="0 0 24 24"><path d="M12 20h9M16.5 3.5a2.12 2.12 0 013 3L7 19l-4 1 1-4z"/></svg></div>
-              <div class="lc-txt"><p class="lc-name">계약 체결·관리</p><p class="lc-sub">전자계약, 갱신 알림, 조건 변경 추적</p></div>
+              <div class="lc-txt"><p class="lc-name">계약·발주</p><p class="lc-sub">전자계약, PO 발행, 조건 변경 추적</p></div>
               <span class="lc-badge ing">진행 중</span>
             </div>
             <div class="lc-conn"></div>
             <div class="lc-item" id="lc4">
-              <div class="lc-ico c3"><svg viewBox="0 0 24 24"><path d="M23 4l-6 6-4-4-8 8"/><path d="M17 4h6v6"/></svg></div>
-              <div class="lc-txt"><p class="lc-name">운영·발주·정산</p><p class="lc-sub">자동 발주, 청구서 대사, 과다 청구 탐지</p></div>
+              <div class="lc-ico c3"><svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg></div>
+              <div class="lc-txt"><p class="lc-name">검수·입고</p><p class="lc-sub">납품 확인, 품질 검수, 입고 처리 자동화</p></div>
               <span class="lc-badge wait">대기</span>
             </div>
             <div class="lc-conn"></div>
             <div class="lc-item" id="lc5">
               <div class="lc-ico c4"><svg viewBox="0 0 24 24"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg></div>
-              <div class="lc-txt"><p class="lc-name">지출 분석·최적화</p><p class="lc-sub">카테고리별 지출 분석, AI 절감 기회 도출</p></div>
+              <div class="lc-txt"><p class="lc-name">정산·지급</p><p class="lc-sub">청구서 대사, 3-way matching, 자동 지급 처리</p></div>
               <span class="lc-badge wait">대기</span>
             </div>
           </div>
