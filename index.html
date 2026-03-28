@@ -19,6 +19,100 @@ html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased;-moz-osx-font-smo
 body{font-family:'Pretendard',sans-serif;background:var(--black);color:var(--white);overflow-x:hidden}
 ::selection{background:var(--b5);color:#fff}
 
+/* ===== VIDEO HERO ===== */
+.video-hero{
+  width:100%;height:100vh;position:relative;overflow:hidden;
+  background:linear-gradient(135deg,#060D1F 0%,#0D1B3E 50%,#060D1F 100%);
+}
+.video-hero .vh-grid{
+  position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(47,109,196,.06) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(47,109,196,.06) 1px,transparent 1px);
+  background-size:60px 60px;
+  animation:vhGridMove 20s linear infinite;
+}
+@keyframes vhGridMove{0%{transform:translate(0,0)}100%{transform:translate(60px,60px)}}
+.video-hero .vh-orb{
+  position:absolute;border-radius:50%;filter:blur(80px);opacity:.15;
+  animation:vhOrbPulse 6s ease-in-out infinite;
+}
+.video-hero .vh-orb1{width:500px;height:500px;background:#2F6DC4;top:20%;left:30%}
+.video-hero .vh-orb2{width:400px;height:400px;background:#4A90D9;top:50%;right:20%;animation-delay:2s}
+.video-hero .vh-orb3{width:300px;height:300px;background:#163172;bottom:10%;left:10%;animation-delay:4s}
+@keyframes vhOrbPulse{0%,100%{opacity:.1;transform:scale(1)}50%{opacity:.25;transform:scale(1.15)}}
+.video-hero .vh-scanline{
+  position:absolute;width:100%;height:2px;z-index:5;
+  background:linear-gradient(90deg,transparent,rgba(74,144,217,.15),transparent);
+  animation:vhScan 4s ease-in-out infinite;
+}
+@keyframes vhScan{0%{top:-2px}100%{top:100%}}
+.video-hero .vh-vignette{
+  position:absolute;inset:0;z-index:8;pointer-events:none;
+  background:radial-gradient(ellipse at center,transparent 40%,rgba(6,13,31,.6) 100%);
+}
+.video-hero .vh-data-layer{position:absolute;inset:0;opacity:0;animation:vhDataIn 2s ease forwards}
+@keyframes vhDataIn{to{opacity:1}}
+.video-hero .vh-num{
+  position:absolute;font-family:'Sora',monospace;font-weight:300;
+  color:rgba(74,144,217,.3);font-size:14px;white-space:nowrap;
+  animation:vhFloat 8s ease-in-out infinite;
+}
+.video-hero .vh-num.bright{color:rgba(74,144,217,.6);font-weight:400}
+.video-hero .vh-num.accent{color:rgba(123,184,238,.5)}
+@keyframes vhFloat{0%,100%{transform:translateY(0);opacity:.3}50%{transform:translateY(-15px);opacity:.7}}
+.video-hero .vh-particle{
+  position:absolute;width:2px;height:2px;background:rgba(74,144,217,.5);
+  border-radius:50%;animation:vhDrift 10s linear infinite;
+}
+@keyframes vhDrift{0%{transform:translateY(0) translateX(0);opacity:0}10%{opacity:1}90%{opacity:1}100%{transform:translateY(-200px) translateX(50px);opacity:0}}
+.video-hero .vh-content{
+  position:absolute;inset:0;z-index:10;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+}
+.video-hero .vh-phase{position:absolute;text-align:center;opacity:0}
+.video-hero .vh-phase1{animation:vhP1 20s ease infinite}
+@keyframes vhP1{0%{opacity:0;transform:translateY(30px)}5%{opacity:1;transform:translateY(0)}30%{opacity:1;transform:translateY(0)}38%{opacity:0;transform:translateY(-20px)}100%{opacity:0}}
+.video-hero .vh-phase2{animation:vhP2 20s ease infinite}
+@keyframes vhP2{0%,35%{opacity:0;transform:scale(.95)}42%{opacity:1;transform:scale(1)}70%{opacity:1;transform:scale(1)}78%{opacity:0;transform:scale(1.02)}100%{opacity:0}}
+.video-hero .vh-phase3{animation:vhP3 20s ease infinite}
+@keyframes vhP3{0%,75%{opacity:0;transform:scale(.9)}82%{opacity:1;transform:scale(1)}97%{opacity:1;transform:scale(1)}100%{opacity:0}}
+.video-hero .vh-line1{font-size:clamp(28px,4vw,42px);font-weight:300;color:rgba(220,240,255,.85);letter-spacing:2px;margin-bottom:16px;font-family:'Pretendard',sans-serif}
+.video-hero .vh-line2{font-size:clamp(32px,4.5vw,48px);font-weight:600;color:#DCF0FF;letter-spacing:1px;font-family:'Pretendard',sans-serif}
+.video-hero .vh-card{
+  background:rgba(13,27,62,.7);border:1px solid rgba(47,109,196,.3);
+  border-radius:16px;padding:40px 60px;backdrop-filter:blur(20px);min-width:min(700px,90vw);
+}
+.video-hero .vh-card-hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:30px;padding-bottom:20px;border-bottom:1px solid rgba(47,109,196,.15)}
+.video-hero .vh-card-title{font-size:18px;font-weight:600;color:rgba(220,240,255,.7);letter-spacing:1px;font-family:'Sora',sans-serif}
+.video-hero .vh-badge{font-size:12px;color:#4A90D9;background:rgba(74,144,217,.1);padding:4px 12px;border-radius:20px;border:1px solid rgba(74,144,217,.2);font-family:'Sora',sans-serif}
+.video-hero .vh-metrics{display:flex;gap:50px;margin-bottom:25px}
+.video-hero .vh-metric{text-align:center;flex:1}
+.video-hero .vh-m-label{font-size:13px;color:rgba(220,240,255,.4);margin-bottom:8px;letter-spacing:.5px}
+.video-hero .vh-m-val{font-size:clamp(28px,3.5vw,38px);font-weight:700;color:#DCF0FF;font-variant-numeric:tabular-nums;font-family:'Sora',sans-serif}
+.video-hero .vh-m-val.gold{color:#E8B931}
+.video-hero .vh-m-val .u{font-size:20px;font-weight:400;color:rgba(220,240,255,.5);margin-left:2px}
+.video-hero .vh-m-change{font-size:13px;color:#4CD964;margin-top:4px}
+.video-hero .vh-m-change.neg{color:#E8B931}
+.video-hero .vh-bars{display:flex;align-items:flex-end;gap:4px;height:50px;justify-content:center;margin-top:15px}
+.video-hero .vh-bar{
+  width:8px;border-radius:3px;
+  background:linear-gradient(to top,rgba(47,109,196,.3),rgba(74,144,217,.7));
+  animation:vhBarGrow 2s ease-out forwards;transform-origin:bottom;
+}
+@keyframes vhBarGrow{0%{transform:scaleY(0)}100%{transform:scaleY(1)}}
+.video-hero .vh-logo{font-size:clamp(64px,10vw,96px);font-weight:700;color:#DCF0FF;letter-spacing:16px;margin-bottom:20px;text-shadow:0 0 60px rgba(47,109,196,.4);font-family:Georgia,serif}
+.video-hero .vh-divider{width:60px;height:2px;background:linear-gradient(90deg,transparent,#2F6DC4,transparent);margin:24px auto}
+.video-hero .vh-tagline{font-size:20px;font-weight:300;color:rgba(220,240,255,.6);letter-spacing:4px;font-family:'Sora',sans-serif}
+.video-hero canvas{position:absolute;inset:0;z-index:2}
+
+/* Video hero → existing hero transition */
+.grad-video-to-black{
+  height:300px;
+  background:linear-gradient(180deg,#060D1F 0%,var(--black) 100%);
+  position:relative;
+}
+
 /* NAV */
 nav{position:fixed;top:0;left:0;right:0;z-index:999;padding:28px 48px;display:flex;justify-content:space-between;align-items:center;transition:all .5s var(--ease)}
 nav.scrolled{background:rgba(5,5,5,.9);backdrop-filter:blur(16px);padding:18px 48px}
@@ -479,7 +573,48 @@ nav.scrolled{background:rgba(5,5,5,.9);backdrop-filter:blur(16px);padding:18px 4
 <!-- NAV -->
 <nav id="nav"><a class="nav-logo" href="#">ZENO</a><button class="nav-cta">도입 문의</button></nav>
 
-<!-- ===== HERO ===== -->
+<!-- ===== VIDEO HERO (최상단) ===== -->
+<div class="video-hero" id="videoHero">
+  <div class="vh-grid"></div>
+  <div class="vh-orb vh-orb1"></div>
+  <div class="vh-orb vh-orb2"></div>
+  <div class="vh-orb vh-orb3"></div>
+  <div class="vh-scanline"></div>
+  <canvas id="vhCanvas"></canvas>
+  <div class="vh-data-layer" id="vhData"></div>
+  <div id="vhParticles"></div>
+  <div class="vh-vignette"></div>
+  <div class="vh-content">
+    <div class="vh-phase vh-phase1">
+      <div class="vh-line1">감으로 사던 시대는 끝났습니다</div>
+      <div class="vh-line2">당연했던 지출을 데이터로 바꿉니다</div>
+    </div>
+    <div class="vh-phase vh-phase2">
+      <div class="vh-card">
+        <div class="vh-card-hdr">
+          <div class="vh-card-title">COST INTELLIGENCE</div>
+          <div class="vh-badge">AI OPTIMIZED</div>
+        </div>
+        <div class="vh-metrics">
+          <div class="vh-metric"><div class="vh-m-label">구매 비용 절감</div><div class="vh-m-val gold" id="vhC1">0<span class="u">%</span></div><div class="vh-m-change neg">YoY -32%</div></div>
+          <div class="vh-metric"><div class="vh-m-label">발주 자동화율</div><div class="vh-m-val" id="vhC2">0<span class="u">%</span></div><div class="vh-m-change">+24% vs last Q</div></div>
+          <div class="vh-metric"><div class="vh-m-label">월 공수 절감</div><div class="vh-m-val" id="vhC3">0<span class="u">h</span></div><div class="vh-m-change">per team</div></div>
+        </div>
+        <div class="vh-bars" id="vhBars"></div>
+      </div>
+    </div>
+    <div class="vh-phase vh-phase3">
+      <div class="vh-logo">ZENO</div>
+      <div class="vh-divider"></div>
+      <div class="vh-tagline">BUSINESS SPEND MANAGEMENT</div>
+    </div>
+  </div>
+</div>
+
+<!-- Video → Story transition -->
+<div class="grad-video-to-black"></div>
+
+<!-- ===== HERO (기존 — 스크롤 하단) ===== -->
 <div class="scene bg-black noise glow-center" id="hero">
   <div class="scene-content center">
     <span class="hero-line t-hero" id="hl1">우리는 아직,</span>
@@ -860,6 +995,50 @@ nav.scrolled{background:rgba(5,5,5,.9);backdrop-filter:blur(16px);padding:18px 4
 
 <!-- ===== JS ===== -->
 <script>
+/* ===== VIDEO HERO SCRIPTS ===== */
+const vhData=['2.24','34,726,200','21.3','+1.91','2,371,200','43.25','-9.12','78,998,800','34.25','+3.78','15,681,200','12.5','2,613,000','47.5','+4.3','6.3','155','1.68','+1.23','899,400','28.7','-3.45','5,120,000','19.8','42,800','+0.96','11,234,500','7.92','+2.15','63.4','1,890,300','-1.47','22,456','+5.63','8,901,200','31.6','456,789','+0.38','99,123,400','15.2','-2.89','73.1'];
+const vhDL=document.getElementById('vhData');
+vhData.forEach((v,i)=>{const e=document.createElement('div');e.className=`vh-num${i%5===0?' bright':''}${i%7===0?' accent':''}`;e.textContent=v;e.style.cssText=`left:${5+Math.random()*88}%;top:${5+Math.random()*88}%;animation-delay:${Math.random()*8}s;animation-duration:${6+Math.random()*6}s;font-size:${11+Math.random()*8}px`;vhDL.appendChild(e)});
+const vhPE=document.getElementById('vhParticles');
+for(let i=0;i<30;i++){const p=document.createElement('div');p.className='vh-particle';p.style.cssText=`left:${Math.random()*100}%;top:${30+Math.random()*70}%;animation-delay:${Math.random()*10}s;animation-duration:${8+Math.random()*6}s`;vhPE.appendChild(p)}
+
+/* Video hero canvas */
+const vhC=document.getElementById('vhCanvas'),vhCtx=vhC.getContext('2d');let vhT=0;
+function vhResize(){vhC.width=window.innerWidth;vhC.height=window.innerHeight}
+vhResize();window.addEventListener('resize',vhResize);
+const vhCharts=[
+  {amp:80,off:400,spd:.02,color:'rgba(47,109,196,0.4)',w:2},
+  {amp:60,off:500,spd:.015,color:'rgba(74,144,217,0.5)',w:2.5},
+  {amp:100,off:350,spd:.025,color:'rgba(123,184,238,0.3)',w:1.5},
+  {amp:40,off:600,spd:.01,color:'rgba(22,49,114,0.5)',w:1.5}
+];
+function vhDraw(){
+  const W=vhC.width,H=vhC.height;vhCtx.clearRect(0,0,W,H);vhT+=.5;
+  const bx=W*.05,by=H*.85;
+  for(let i=0;i<60;i++){const h=H*.03+Math.abs(Math.sin(vhT*.01+i*.3))*H*.11+Math.abs(Math.cos(vhT*.008+i*.2))*H*.055;const x=bx+i*8;const g=vhCtx.createLinearGradient(x,by,x,by-h);g.addColorStop(0,'rgba(47,109,196,0.1)');g.addColorStop(1,'rgba(74,144,217,0.35)');vhCtx.fillStyle=g;vhCtx.fillRect(x,by-h,6,h)}
+  const bx2=W*.7;
+  for(let i=0;i<60;i++){const h=H*.02+Math.abs(Math.cos(vhT*.012+i*.25))*H*.09+Math.abs(Math.sin(vhT*.009+i*.15))*H*.045;const x=bx2+i*8;const g=vhCtx.createLinearGradient(x,by,x,by-h);g.addColorStop(0,'rgba(22,49,114,0.1)');g.addColorStop(1,'rgba(47,109,196,0.25)');vhCtx.fillStyle=g;vhCtx.fillRect(x,by-h,6,h)}
+  const yR=H/1080;
+  vhCharts.forEach(c=>{vhCtx.beginPath();vhCtx.strokeStyle=c.color;vhCtx.lineWidth=c.w;for(let x=0;x<W;x+=10){const y=c.off*yR+Math.sin(x*c.spd+vhT*.02)*c.amp*yR+Math.sin(x*c.spd*.5+vhT*.015)*c.amp*.5*yR+Math.cos(x*c.spd*.3+vhT*.01)*c.amp*.3*yR;x===0?vhCtx.moveTo(x,y):vhCtx.lineTo(x,y)}vhCtx.stroke();vhCtx.strokeStyle=c.color.replace(/[\d.]+\)$/,'0.1)');vhCtx.lineWidth=c.w+4;vhCtx.stroke()});
+  const cc=Math.floor(W/45);
+  for(let i=0;i<cc;i++){const x=W*.1+i*(W*.8/cc);const bY=H*.18+Math.sin(vhT*.015+i*.4)*H*.055;const h=15+Math.random()*30;const up=Math.sin(vhT*.02+i)>0;vhCtx.fillStyle=up?'rgba(74,144,217,0.3)':'rgba(47,109,196,0.2)';vhCtx.fillRect(x-2,bY-h/2,4,h);vhCtx.strokeStyle=up?'rgba(74,144,217,0.2)':'rgba(47,109,196,0.15)';vhCtx.lineWidth=1;vhCtx.beginPath();vhCtx.moveTo(x,bY-h/2-8);vhCtx.lineTo(x,bY+h/2+8);vhCtx.stroke()}
+  requestAnimationFrame(vhDraw);
+}
+vhDraw();
+
+/* Video hero counters */
+function vhCnt(el,tgt,dur,sfx){const s=performance.now();(function t(n){const p=Math.min((n-s)/dur,1);const v=1-Math.pow(1-p,3);el.innerHTML=Math.round(v*tgt)+'<span class="u">'+sfx+'</span>';p<1&&requestAnimationFrame(t)})(s)}
+function vhStartCounters(){
+  vhCnt(document.getElementById('vhC1'),32,2000,'%');
+  vhCnt(document.getElementById('vhC2'),80,2000,'%');
+  vhCnt(document.getElementById('vhC3'),15,2000,'h');
+  const b=document.getElementById('vhBars');b.innerHTML='';
+  [20,35,28,42,38,50,30,45,33,48,25,40,36,44,29,47,32,41,38,46].forEach((h,i)=>{const d=document.createElement('div');d.className='vh-bar';d.style.height=h+'px';d.style.animationDelay=i*.05+'s';b.appendChild(d)});
+}
+setInterval(()=>setTimeout(vhStartCounters,8400),20000);
+setTimeout(vhStartCounters,8400);
+
+/* ===== BRAND STORY SCRIPTS ===== */
 const nav=document.getElementById('nav');
 window.addEventListener('scroll',()=>nav.classList.toggle('scrolled',scrollY>60));
 
