@@ -410,7 +410,7 @@ nav.scrolled{background:rgba(5,5,5,.9);backdrop-filter:blur(16px);padding:18px 4
   100%{opacity:0;transform:scale(2.5)}
 }
 .horizon-line{
-  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  position:absolute;top:62%;left:50%;transform:translate(-50%,-50%);
   width:0;height:2px;z-index:4;
   background:linear-gradient(90deg,transparent,var(--gold),var(--s3),var(--gold),transparent);
   transition:width 1.8s var(--ease);
@@ -587,6 +587,7 @@ nav.scrolled{background:rgba(5,5,5,.9);backdrop-filter:blur(16px);padding:18px 4
 @keyframes archDotRight{0%{left:-4px;opacity:0}10%{opacity:1}90%{opacity:1}100%{left:100%;opacity:0}}
 .arch-pill{font-size:.65rem;padding:4px 10px;border-radius:100px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);color:rgba(255,255,255,.55);transition:all .4s ease}
 .arch-pill.active{background:rgba(47,109,196,.15);border-color:rgba(47,109,196,.3);color:var(--s3);box-shadow:0 0 8px rgba(47,109,196,.2)}
+.arch-pill.done{background:rgba(74,222,128,.1);border-color:rgba(74,222,128,.2);color:#4ade80}
 
 /* RESPONSIVE */
 @media(max-width:768px){
@@ -945,27 +946,26 @@ nav.scrolled{background:rgba(5,5,5,.9);backdrop-filter:blur(16px);padding:18px 4
                   <div><p style="font-family:'Sora',sans-serif;font-size:1.2rem;font-weight:800;color:var(--s3)" id="archOsGov">0</p><p style="font-size:.5rem;color:rgba(255,255,255,.35)">규칙 적용</p></div>
                   <div><p style="font-family:'Sora',sans-serif;font-size:1.2rem;font-weight:800;color:var(--gold)" id="archOsAi">0</p><p style="font-size:.5rem;color:rgba(255,255,255,.35)">AI 감지</p></div>
                 </div>
+                <!-- 구매·지출 활동 (BSM OS 내부) -->
+                <div style="margin-top:16px;padding-top:12px;border-top:1px solid rgba(74,222,128,.12)">
+                  <p style="font-size:.55rem;color:rgba(255,255,255,.35);margin-bottom:8px;letter-spacing:.08em">구매 · 지출 활동</p>
+                  <div id="archPills" style="display:flex;flex-wrap:wrap;gap:4px;justify-content:center">
+                    <span class="arch-pill">입찰/업체선정</span>
+                    <span class="arch-pill">RFx</span>
+                    <span class="arch-pill">PR / PO</span>
+                    <span class="arch-pill">입고 검수</span>
+                    <span class="arch-pill">자재 운영</span>
+                    <span class="arch-pill">계약 관리</span>
+                    <span class="arch-pill">법인카드</span>
+                    <span class="arch-pill">리스/렌탈</span>
+                    <span class="arch-pill">인사/총무</span>
+                    <span class="arch-pill">비용/통계</span>
+                  </div>
+                </div>
               </div>
             </div>
             <div style="position:absolute;top:0;left:-100%;width:40%;height:100%;background:linear-gradient(90deg,transparent,rgba(74,222,128,.04),transparent);animation:archSweep 3s ease-in-out infinite .8s;pointer-events:none"></div>
           </div>
-        </div>
-      </div>
-
-      <!-- 하단: 구매·지출 활동 -->
-      <div class="arch-ring" id="archR4" style="margin-top:12px;border:1px solid rgba(255,255,255,.06);border-radius:12px;padding:14px 16px;text-align:center;opacity:0;transform:translateY(20px)">
-        <p style="font-size:.6rem;color:rgba(255,255,255,.4);margin-bottom:10px;letter-spacing:.08em">구매 · 지출 활동</p>
-        <div id="archPills" style="display:flex;flex-wrap:wrap;gap:5px;justify-content:center">
-          <span class="arch-pill">입찰/업체선정</span>
-          <span class="arch-pill">RFx</span>
-          <span class="arch-pill">PR / PO</span>
-          <span class="arch-pill">입고 검수</span>
-          <span class="arch-pill">자재 운영</span>
-          <span class="arch-pill">계약 관리</span>
-          <span class="arch-pill">법인카드</span>
-          <span class="arch-pill">리스/렌탈</span>
-          <span class="arch-pill">인사/총무</span>
-          <span class="arch-pill">비용/통계</span>
         </div>
       </div>
     </div>
@@ -1333,7 +1333,7 @@ if(archEl){
     setTimeout(()=>{const r1=document.getElementById('archR1');if(r1)r1.classList.add('show')},300);
     setTimeout(()=>{const r2=document.getElementById('archR2');if(r2)r2.classList.add('show')},700);
     setTimeout(()=>{const r3=document.getElementById('archR3');if(r3)r3.classList.add('show')},1100);
-    setTimeout(()=>{const r4=document.getElementById('archR4');if(r4)r4.classList.add('show')},1500);
+    /* R4 removed — pills now inside BSM OS */
     /* OS live counters */
     const txEl=document.getElementById('archOsTx');
     const govEl=document.getElementById('archOsGov');
@@ -1341,9 +1341,18 @@ if(archEl){
     if(txEl){let v=47;txEl.textContent=v;setInterval(()=>{v+=Math.floor(Math.random()*3)+1;txEl.textContent=v},2000)}
     if(govEl){let v=12;govEl.textContent=v;setInterval(()=>{v+=Math.floor(Math.random()*2);govEl.textContent=v},3000)}
     if(aiEl){let v=3;aiEl.textContent=v;setInterval(()=>{v+=Math.random()>.6?1:0;aiEl.textContent=v},4000)}
-    /* Pill cycling */
+    /* Pill cycling — active(처리중) + done(완료) 동시 표시 */
     const pills=document.querySelectorAll('.arch-pill');let pi=0;
-    setInterval(()=>{pills.forEach(p=>p.classList.remove('active'));if(pills[pi])pills[pi].classList.add('active');pi=(pi+1)%pills.length},1000);
+    setInterval(()=>{
+      pills.forEach(p=>{p.classList.remove('active');p.classList.remove('done')});
+      if(pills[pi])pills[pi].classList.add('active');
+      /* 이전 2개는 '완료' 상태 */
+      const p1=(pi-1+pills.length)%pills.length;
+      const p2=(pi-2+pills.length)%pills.length;
+      if(pills[p1])pills[p1].classList.add('done');
+      if(pills[p2])pills[p2].classList.add('done');
+      pi=(pi+1)%pills.length;
+    },800);
   }})},{threshold:.1}).observe(archEl)
 }
 
