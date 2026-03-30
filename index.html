@@ -847,40 +847,31 @@ nav.scrolled{background:rgba(5,5,5,.9);backdrop-filter:blur(16px);padding:18px 4
     <div class="feat-info reveal-l">
       <p class="feat-num">AXIS 01</p>
       <h3 class="feat-title">구매 지출관리 OS</h3>
-      <p class="feat-desc" style="color:rgba(255,255,255,.8)">규정 세팅 → 예산 승인 → 구매요청 → 발주 → 검수 → 정산. 구매의 모든 단계가 거버넌스 정책 안에서 실행되고, 지출 데이터가 실시간으로 쌓입니다.</p>
-      <div class="feat-tags"><span class="feat-tag">거버넌스 정책 엔진</span><span class="feat-tag">P2P 프로세스</span><span class="feat-tag">실시간 대시보드</span></div>
+      <p class="feat-desc" style="color:rgba(255,255,255,.8)">구매 규칙이 시스템 안에 세팅되고, 요청→승인→발주→검수→정산까지 모든 단계가 그 규칙 위에서 실행됩니다. 지출 데이터는 실시간으로 쌓입니다.</p>
+      <div class="feat-tags"><span class="feat-tag">구매 규칙 자동 적용</span><span class="feat-tag">요청→정산 자동화</span><span class="feat-tag">실시간 지출 현황</span></div>
     </div>
     <div class="reveal-blur d2">
       <div class="app-frame" id="gov-mock">
         <div class="neural-grid"></div>
         <div class="ai-particles"><div class="ai-particle" style="left:15%;top:25%"></div><div class="ai-particle"></div><div class="ai-particle"></div><div class="ai-particle"></div><div class="ai-particle"></div><div class="ai-particle"></div></div>
         <div class="app-titlebar"><div class="dots"><span class="r"></span><span class="y"></span><span class="g"></span></div><span class="title">ZENO — Spend OS</span></div>
-        <div class="app-body">
-          <!-- P2P Pipeline -->
-          <div class="lc-list" id="lc" style="margin-bottom:14px">
-            <div class="lc-item" id="lc1"><div class="lc-ico c1"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6"/></svg></div><div class="lc-txt"><p class="lc-name">PR 구매요청</p><p class="lc-sub">예산 확인, 승인 라인 자동 설정</p></div><span class="lc-badge done">완료</span></div>
-            <div class="lc-conn"></div>
-            <div class="lc-item" id="lc2"><div class="lc-ico c1"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/></svg></div><div class="lc-txt"><p class="lc-name">조달·소싱</p><p class="lc-sub">비교견적, AI 최적 추천</p></div><span class="lc-badge done">완료</span></div>
-            <div class="lc-conn"></div>
-            <div class="lc-item active" id="lc3"><div class="lc-ico c2"><svg viewBox="0 0 24 24"><path d="M12 20h9M16.5 3.5a2.12 2.12 0 013 3L7 19l-4 1 1-4z"/></svg></div><div class="lc-txt"><p class="lc-name">계약·발주</p><p class="lc-sub">전자계약, PO 발행</p></div><span class="lc-badge ing">진행 중</span></div>
-            <div class="lc-conn"></div>
-            <div class="lc-item" id="lc4"><div class="lc-ico c3"><svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg></div><div class="lc-txt"><p class="lc-name">검수·정산</p><p class="lc-sub">3-way matching, 자동 지급</p></div><span class="lc-badge wait">대기</span></div>
-          </div>
-          <!-- Governance layers -->
-          <div class="gov-stack" style="margin-top:10px">
-            <div class="gov-lyr gov-lyr-1" id="gl2" style="opacity:1;transform:none">
-              <p class="gov-lbl">거버넌스 정책 엔진 <span class="gov-alert-live"><span class="gov-alert-dot"></span>ACTIVE</span></p>
-              <div class="gov-row"><span class="gov-icon ok">✓</span><span>비교견적 3건 필수 → 자동 검증</span></div>
-              <div class="gov-row"><span class="gov-icon ok">✓</span><span>금액별 결재 라인 자동 설정</span></div>
-              <div class="gov-row"><span class="gov-icon ai">◆</span><span>시장 단가 대비 초과 → 자동 경고</span></div>
-              <div class="gov-progress"><div class="gov-progress-fill"></div></div>
-            </div>
-          </div>
-          <!-- Dashboard mini -->
-          <div class="dash-stats" style="margin-top:10px">
+        <div class="app-body" id="dash-mock">
+          <!-- Dashboard only — clean & readable -->
+          <div class="dash-stats">
             <div class="dash-stat"><p class="dash-val t-sky" id="c1">0</p><p class="dash-lbl">이번 달 구매건</p></div>
             <div class="dash-stat"><p class="dash-val t-gold" id="c2">0</p><p class="dash-lbl">절감 금액 (만원)</p></div>
             <div class="dash-stat"><p class="dash-val" style="color:#4ade80" id="c3">0%</p><p class="dash-lbl">자동화율</p></div>
+          </div>
+          <div class="dash-bars" id="db" style="margin-top:12px">
+            <div class="dash-bar"><span class="dash-bar-name">MRO</span><div class="dash-bar-track"><div class="dash-bar-fill" style="width:72%;background:var(--b5)"></div></div></div>
+            <div class="dash-bar"><span class="dash-bar-name">IT장비</span><div class="dash-bar-track"><div class="dash-bar-fill" style="width:56%;background:var(--s4)"></div></div></div>
+            <div class="dash-bar"><span class="dash-bar-name">인력소싱</span><div class="dash-bar-track"><div class="dash-bar-fill" style="width:41%;background:var(--s3)"></div></div></div>
+            <div class="dash-bar"><span class="dash-bar-name">마케팅</span><div class="dash-bar-track"><div class="dash-bar-fill" style="width:33%;background:var(--gold)"></div></div></div>
+          </div>
+          <!-- Governance status bar -->
+          <div style="margin-top:12px;padding:10px 14px;background:rgba(47,109,196,.06);border:1px solid rgba(47,109,196,.12);border-radius:6px;display:flex;align-items:center;gap:8px">
+            <span class="gov-alert-live"><span class="gov-alert-dot"></span>LIVE</span>
+            <span style="font-size:.7rem;color:rgba(255,255,255,.6)">구매 규칙 자동 적용 중 · 이상 지출 모니터링 · 승인 이력 추적</span>
           </div>
         </div>
       </div>
@@ -895,7 +886,7 @@ nav.scrolled{background:rgba(5,5,5,.9);backdrop-filter:blur(16px);padding:18px 4
       <p class="feat-num">AXIS 02</p>
       <h3 class="feat-title">마켓플레이스</h3>
       <p class="feat-desc" style="color:rgba(255,255,255,.8)">사무용품부터 IT 장비, 법무 자문부터 디자인 외주까지. 카탈로그 구매와 비정형 서비스 구매가 하나의 마켓플레이스 안에 세팅되어, 현업은 편하게 구매하고 구매팀은 효율적으로 관리합니다.</p>
-      <div class="feat-tags"><span class="feat-tag">카탈로그 구매</span><span class="feat-tag">비정형 서비스</span><span class="feat-tag">거버넌스 정책 적용</span></div>
+      <div class="feat-tags"><span class="feat-tag">사무용품·IT·MRO</span><span class="feat-tag">법무·디자인·컨설팅</span><span class="feat-tag">구매 규칙 자동 적용</span></div>
     </div>
     <div class="reveal-blur d2">
       <div class="app-frame" id="dash-mock">
@@ -969,7 +960,7 @@ nav.scrolled{background:rgba(5,5,5,.9);backdrop-filter:blur(16px);padding:18px 4
       <p class="feat-num">AXIS 03</p>
       <h3 class="feat-title">AI 에이전트</h3>
       <p class="feat-desc" style="color:rgba(255,255,255,.8)">간접구매 300여 종, 모든 구매는 접근 방식이 다릅니다. 구매 의도만 있으면 그 뒤 프로세스는 AI 에이전트와 함께 — 조달부터 계약까지 자동으로 진행됩니다.</p>
-      <div class="feat-tags"><span class="feat-tag">AI 구매 챗봇</span><span class="feat-tag">P2P 자동화</span><span class="feat-tag">300+ 카테고리 대응</span></div>
+      <div class="feat-tags"><span class="feat-tag">AI 구매 어시스턴트</span><span class="feat-tag">요청→발주 자동화</span><span class="feat-tag">300+ 품목 대응</span></div>
     </div>
     <div class="reveal-blur d2">
       <div class="chat-frame" id="agent-mock">
@@ -1006,52 +997,11 @@ nav.scrolled{background:rgba(5,5,5,.9);backdrop-filter:blur(16px);padding:18px 4
   </div>
 </div>
 
-<!-- ===== BSM 솔루션 계층도 (기능 후 — 전체 정리) ===== -->
-<div class="scene bg-navy noise glow-center" style="min-height:70vh;padding:80px 48px">
+<!-- 3축 → 성과 브릿지 -->
+<div class="scene-half bg-navy noise" style="min-height:40vh;padding:60px 48px">
   <div class="scene-content center">
-    <p class="t-label t-gold reveal" style="margin-bottom:12px">ZENO ARCHITECTURE</p>
-    <p class="t-heading reveal d1" style="color:#fff;margin-bottom:16px">하나의 시스템 안에서, 전부 완결됩니다.</p>
-    <p class="t-body reveal d2" style="color:rgba(255,255,255,.6);margin-bottom:40px">거버넌스 위에서 구매가 실행되고, AI가 모든 데이터를 학습합니다.</p>
-    <div class="reveal d3" style="max-width:680px;margin:0 auto;display:flex;flex-direction:column;gap:6px">
-      <!-- AI -->
-      <div style="background:rgba(212,168,83,.08);border:2px solid rgba(212,168,83,.3);border-radius:12px;padding:18px 24px;text-align:center">
-        <p style="font-family:'Sora',sans-serif;font-size:.65rem;letter-spacing:.15em;color:var(--gold);font-weight:700">🤖 AI ASSISTANT</p>
-        <p style="font-size:.75rem;color:rgba(255,255,255,.55);margin-top:4px">이상지출 자동탐지 · 최적 의사결정 추천 · 루틴 자동 실행</p>
-      </div>
-      <div style="text-align:center;color:rgba(255,255,255,.15)">│</div>
-      <!-- Governance -->
-      <div style="background:rgba(47,109,196,.08);border:2px solid rgba(47,109,196,.35);border-radius:12px;padding:18px 24px;text-align:center">
-        <p style="font-family:'Sora',sans-serif;font-size:.65rem;letter-spacing:.15em;color:var(--s3);font-weight:700">구매 거버넌스</p>
-        <p style="font-size:.75rem;color:rgba(255,255,255,.55);margin-top:4px">권한 · 규칙 · 프로세스 · 통제 · 책임</p>
-      </div>
-      <div style="text-align:center;color:rgba(255,255,255,.15)">│</div>
-      <!-- BSM OS -->
-      <div style="display:flex;align-items:center;gap:16px">
-        <div style="text-align:right;min-width:70px;flex-shrink:0">
-          <p style="font-size:.7rem;color:rgba(255,255,255,.45);font-weight:600">ERP</p>
-          <p style="font-size:.55rem;color:rgba(255,255,255,.25);margin-top:2px">그룹웨어</p>
-        </div>
-        <div style="flex-shrink:0"><span style="font-size:.5rem;color:rgba(255,255,255,.25)">←→</span></div>
-        <div style="flex:1;background:rgba(74,222,128,.06);border:2px solid rgba(74,222,128,.25);border-radius:12px;padding:18px 24px;text-align:center">
-          <p style="font-family:'Sora',sans-serif;font-size:.85rem;font-weight:800;color:#fff">BSM OS</p>
-          <p style="font-size:.75rem;color:rgba(255,255,255,.55);margin-top:4px">Total Spend Control</p>
-        </div>
-      </div>
-      <div style="text-align:center;color:rgba(255,255,255,.15)">│</div>
-      <!-- Activities -->
-      <div style="background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:16px;text-align:center">
-        <p style="font-size:.65rem;color:rgba(255,255,255,.4);margin-bottom:10px">구매 · 지출 활동</p>
-        <div style="display:flex;flex-wrap:wrap;gap:5px;justify-content:center">
-          <span style="font-size:.6rem;padding:3px 8px;border-radius:100px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);color:rgba(255,255,255,.5)">입찰/업체선정</span>
-          <span style="font-size:.6rem;padding:3px 8px;border-radius:100px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);color:rgba(255,255,255,.5)">RFx</span>
-          <span style="font-size:.6rem;padding:3px 8px;border-radius:100px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);color:rgba(255,255,255,.5)">PR/PO</span>
-          <span style="font-size:.6rem;padding:3px 8px;border-radius:100px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);color:rgba(255,255,255,.5)">입고검수</span>
-          <span style="font-size:.6rem;padding:3px 8px;border-radius:100px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);color:rgba(255,255,255,.5)">계약관리</span>
-          <span style="font-size:.6rem;padding:3px 8px;border-radius:100px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);color:rgba(255,255,255,.5)">법인카드</span>
-          <span style="font-size:.6rem;padding:3px 8px;border-radius:100px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);color:rgba(255,255,255,.5)">비용/통계</span>
-        </div>
-      </div>
-    </div>
+    <p class="t-heading reveal" style="color:rgba(255,255,255,.7)">세 축이 하나로 연결될 때,</p>
+    <p class="t-heading reveal d1" style="color:#fff">결과가 달라집니다.</p>
   </div>
 </div>
 
@@ -1059,7 +1009,44 @@ nav.scrolled{background:rgba(5,5,5,.9);backdrop-filter:blur(16px);padding:18px 4
 <div class="scene bg-navy noise glow-gold" style="min-height:80vh">
   <div class="scene-content center">
     <p class="stat-num reveal" id="stat-n">0%</p>
-    <p class="t-body reveal d2" style="margin-top:24px;color:rgba(255,255,255,.8);font-size:clamp(1.1rem,2vw,1.4rem)">업무 효율화는 자연스럽게 따라오고,<br>평균 10% 비용 절감이 실현됩니다.</p>
+    <p class="t-display reveal d2" style="margin-top:16px;color:#fff;font-size:clamp(1.4rem,3vw,2.4rem)">평균 비용 절감.</p>
+    <p class="t-body reveal d3" style="margin-top:20px;color:rgba(255,255,255,.7);font-size:clamp(1rem,1.8vw,1.2rem)">구매 프로세스가 정리되면, 효율은 자연히 따라옵니다.</p>
+    <p class="reveal d4" style="margin-top:12px;font-size:.8rem;color:rgba(255,255,255,.4)">* 연 구매액 30~100억 규모 도입 기업 기준, 비교견적 자동화 및 단가 최적화 효과 포함</p>
+  </div>
+</div>
+
+<!-- ===== 고객사 ===== -->
+<div class="scene-half bg-navy noise" style="min-height:auto;padding:80px 48px">
+  <div class="scene-content center">
+    <p class="t-label reveal" style="color:rgba(255,255,255,.4);margin-bottom:32px">ZENO를 선택한 기업들</p>
+    <!-- 로고 3개 -->
+    <div class="reveal d1" style="display:flex;justify-content:center;align-items:center;gap:clamp(32px,6vw,64px);flex-wrap:wrap;margin-bottom:56px">
+      <div style="text-align:center">
+        <p style="font-family:'Sora',sans-serif;font-size:clamp(1.2rem,2.5vw,1.8rem);font-weight:800;color:rgba(255,255,255,.7);letter-spacing:.05em">CERAGEM</p>
+        <p style="font-size:.7rem;color:rgba(255,255,255,.35);margin-top:4px">세라젬</p>
+      </div>
+      <div style="text-align:center">
+        <p style="font-family:'Sora',sans-serif;font-size:clamp(1.2rem,2.5vw,1.8rem);font-weight:800;color:rgba(255,255,255,.7);letter-spacing:.05em">GONG CHA</p>
+        <p style="font-size:.7rem;color:rgba(255,255,255,.35);margin-top:4px">공차코리아</p>
+      </div>
+      <div style="text-align:center">
+        <p style="font-family:'Sora',sans-serif;font-size:clamp(1.2rem,2.5vw,1.8rem);font-weight:800;color:rgba(255,255,255,.7);letter-spacing:.05em">HANJIN</p>
+        <p style="font-size:.7rem;color:rgba(255,255,255,.35);margin-top:4px">한진</p>
+      </div>
+    </div>
+    <!-- 사례 카드 2개 -->
+    <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:20px;max-width:800px;margin:0 auto">
+      <div class="reveal d2" style="background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:28px 24px">
+        <p style="font-family:'Sora',sans-serif;font-size:.65rem;letter-spacing:.15em;color:var(--s3);font-weight:700;margin-bottom:12px">HANJIN</p>
+        <p style="font-size:1.05rem;color:rgba(255,255,255,.85);line-height:1.7;font-weight:500">전사 구매 프로세스를 ZENO로 통합.<br>구매 처리 시간 <span style="color:var(--gold);font-weight:700">60% 단축</span>, 공급업체 관리 효율화 달성.</p>
+        <p style="font-size:.75rem;color:rgba(255,255,255,.4);margin-top:16px">— 한진 경영지원본부</p>
+      </div>
+      <div class="reveal d3" style="background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:28px 24px">
+        <p style="font-family:'Sora',sans-serif;font-size:.65rem;letter-spacing:.15em;color:var(--gold);font-weight:700;margin-bottom:12px">ATOTECH KOREA</p>
+        <p style="font-size:1.05rem;color:rgba(255,255,255,.85);line-height:1.7;font-weight:500">MRO 구매 비용 <span style="color:var(--gold);font-weight:700">연 15% 절감</span>.<br>비교견적 자동화로 구매 담당 업무 부담 대폭 감소.</p>
+        <p style="font-size:.75rem;color:rgba(255,255,255,.4);margin-top:16px">— 아토텍코리아 구매팀</p>
+      </div>
+    </div>
   </div>
 </div>
 
