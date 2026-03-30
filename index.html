@@ -997,14 +997,6 @@ nav.scrolled{background:rgba(5,5,5,.9);backdrop-filter:blur(16px);padding:18px 4
   </div>
 </div>
 
-<!-- 3축 → 성과 브릿지 -->
-<div class="scene-half bg-navy noise" style="min-height:40vh;padding:60px 48px">
-  <div class="scene-content center">
-    <p class="t-heading reveal" style="color:rgba(255,255,255,.7)">세 축이 하나로 연결될 때,</p>
-    <p class="t-heading reveal d1" style="color:#fff">결과가 달라집니다.</p>
-  </div>
-</div>
-
 <!-- STAT -->
 <div class="scene bg-navy noise glow-gold" style="min-height:80vh">
   <div class="scene-content center">
@@ -1158,20 +1150,16 @@ let td=false;
 function ty(el,txt,cb){let i=0;el.innerHTML='<span class="cur"></span>';const iv=setInterval(()=>{if(i<txt.length){el.innerHTML=txt.slice(0,++i)+'<span class="cur"></span>'}else{el.innerHTML=txt;clearInterval(iv);cb&&cb()}},38)}
 new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting&&!td){td=true;setTimeout(()=>ty(document.getElementById('t1'),tl[0],()=>setTimeout(()=>ty(document.getElementById('t2'),tl[1],()=>setTimeout(()=>ty(document.getElementById('t3'),tl[2]),200)),200)),200)}})},{threshold:.4}).observe(document.getElementById('term'));
 
-/* Governance layers */
-new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){['gl1','gl2','gl3'].forEach((id,i)=>setTimeout(()=>document.getElementById(id).classList.add('v'),300+i*500))}})},{threshold:.3,once:true}).observe(document.getElementById('gov-mock'));
-
 /* Dashboard counters */
 function cnt(el,end,sfx,dur){const s=performance.now();(function t(n){const p=Math.min((n-s)/dur,1);const v=1-Math.pow(1-p,3);el.textContent=Math.round(v*end).toLocaleString()+sfx;p<1&&requestAnimationFrame(t)})(s)}
 let dd=false;
-new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting&&!dd){dd=true;cnt(document.getElementById('c1'),247,'건',1800);cnt(document.getElementById('c2'),3842,'',1800);cnt(document.getElementById('c3'),82,'%',1800);setTimeout(()=>document.querySelectorAll('.dash-bar-fill').forEach(b=>b.classList.add('v')),400)}})},{threshold:.3}).observe(document.getElementById('dash-mock'));
+const dashEl=document.getElementById('dash-mock');
+if(dashEl){new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting&&!dd){dd=true;cnt(document.getElementById('c1'),247,'건',1800);cnt(document.getElementById('c2'),3842,'',1800);cnt(document.getElementById('c3'),82,'%',1800);setTimeout(()=>document.querySelectorAll('.dash-bar-fill').forEach(b=>b.classList.add('v')),400)}})},{threshold:.15}).observe(dashEl)}
 
-/* Lifecycle */
-new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){['lc1','lc2','lc3','lc4','lc5'].forEach((id,i)=>setTimeout(()=>document.getElementById(id).classList.add('v'),150+i*250))}})},{threshold:.3}).observe(document.getElementById('lc-mock'));
-
-/* Stat counter */
+/* Stat counter — threshold lowered to .15 */
 let sd=false;
-new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting&&!sd){sd=true;cnt(document.getElementById('stat-n'),10,'%',2200)}})},{threshold:.4}).observe(document.getElementById('stat-n'));
+const statEl=document.getElementById('stat-n');
+if(statEl){new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting&&!sd){sd=true;cnt(statEl,10,'%',2200)}})},{threshold:.15}).observe(statEl)}
 
 /* #2 — Feature entrance dramatic color transition */
 let fe=false;
@@ -1179,14 +1167,15 @@ new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting&&!fe){fe=true;e
 
 /* #3 — App frame scan line trigger */
 document.querySelectorAll('.app-frame, .chat-frame').forEach(frame=>{
-  new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('scanning')})},{threshold:.3}).observe(frame);
+  new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('scanning')})},{threshold:.1}).observe(frame);
 });
 
 /* #4 — AI Agent chat animation */
 let chatDone=false;
-new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting&&!chatDone){chatDone=true;
+const agentEl=document.getElementById('agent-mock');
+if(agentEl){new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting&&!chatDone){chatDone=true;
   ['cm1','cm2','cm3'].forEach((id,i)=>setTimeout(()=>{const el=document.getElementById(id);if(el)el.classList.add('v')},300+i*700));
-}})},{threshold:.3}).observe(document.getElementById('agent-mock'));
+}})},{threshold:.1}).observe(agentEl)}
 </script>
 </body>
 </html>
