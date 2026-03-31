@@ -589,6 +589,22 @@ nav.scrolled{background:rgba(5,5,5,.9);backdrop-filter:blur(16px);padding:18px 4
 .arch-pill.active{background:rgba(47,109,196,.15);border-color:rgba(47,109,196,.3);color:var(--s3);box-shadow:0 0 8px rgba(47,109,196,.2)}
 .arch-pill.done{background:rgba(74,222,128,.1);border-color:rgba(74,222,128,.2);color:#4ade80}
 
+/* ===== MARKETPLACE CURSOR MOTION ===== */
+.mkt-cursor{
+  position:absolute;width:16px;height:20px;z-index:10;pointer-events:none;
+  transition:all 1.2s cubic-bezier(.4,0,.2,1);opacity:0;
+}
+.mkt-cursor.show{opacity:1}
+.mkt-cursor svg{filter:drop-shadow(0 2px 4px rgba(0,0,0,.5))}
+.mkt-card-hover{border-color:rgba(47,109,196,.4)!important;background:rgba(255,255,255,.08)!important;transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.3)}
+.mkt-card{transition:all .3s ease}
+@keyframes mktClick{0%{transform:scale(1)}50%{transform:scale(.9)}100%{transform:scale(1)}}
+.mkt-clicking{animation:mktClick .15s ease}
+.mkt-added{position:absolute;top:8px;right:8px;font-size:.5rem;padding:3px 8px;border-radius:100px;background:rgba(74,222,128,.15);color:#4ade80;border:1px solid rgba(74,222,128,.25);opacity:0;transform:translateY(4px);transition:all .3s ease}
+.mkt-added.show{opacity:1;transform:translateY(0)}
+.mkt-toast{position:absolute;bottom:10px;left:50%;transform:translateX(-50%) translateY(10px);font-size:.55rem;padding:6px 14px;border-radius:6px;background:rgba(74,222,128,.15);border:1px solid rgba(74,222,128,.25);color:#4ade80;opacity:0;transition:all .4s ease;white-space:nowrap;z-index:11}
+.mkt-toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
 /* RESPONSIVE */
 @media(max-width:768px){
   nav{padding:16px 20px}nav.scrolled{padding:12px 20px}
@@ -1052,9 +1068,14 @@ nav.scrolled{background:rgba(5,5,5,.9);backdrop-filter:blur(16px);padding:18px 4
             <span style="font-size:.5rem;color:rgba(255,255,255,.3)">정렬: 추천순 ▾</span>
           </div>
           <!-- Product Grid (Coupa catalog style) -->
-          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:0 14px 14px">
+          <div id="mktGrid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:0 14px 14px;position:relative">
+            <!-- Fake cursor -->
+            <div class="mkt-cursor" id="mktCursor"><svg width="16" height="20" viewBox="0 0 16 20" fill="none"><path d="M1 1L1 14.5L4.5 11L8 18L10.5 17L7 10L12 10L1 1Z" fill="white" stroke="rgba(0,0,0,.6)" stroke-width="1"/></svg></div>
+            <!-- Toast -->
+            <div class="mkt-toast" id="mktToast">✓ 구매요청이 등록되었습니다</div>
             <!-- Card 1 -->
-            <div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);border-radius:8px;padding:10px;position:relative">
+            <div class="mkt-card" id="mktC1" style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);border-radius:8px;padding:10px;position:relative">
+              <div class="mkt-added" id="mktA1">✓ 추가됨</div>
               <div style="width:100%;aspect-ratio:1;background:rgba(47,109,196,.06);border-radius:6px;display:flex;align-items:center;justify-content:center;margin-bottom:8px">
                 <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="rgba(123,184,238,.4)" stroke-width="1.5"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M12 6v12M2 12h20"/></svg>
               </div>
@@ -1067,7 +1088,8 @@ nav.scrolled{background:rgba(5,5,5,.9);backdrop-filter:blur(16px);padding:18px 4
               </div>
             </div>
             <!-- Card 2 -->
-            <div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);border-radius:8px;padding:10px;position:relative">
+            <div class="mkt-card" id="mktC2" style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);border-radius:8px;padding:10px;position:relative">
+              <div class="mkt-added" id="mktA2">✓ 추가됨</div>
               <div style="width:100%;aspect-ratio:1;background:rgba(212,168,83,.04);border-radius:6px;display:flex;align-items:center;justify-content:center;margin-bottom:8px">
                 <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="rgba(212,168,83,.4)" stroke-width="1.5"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M12 6v12M2 12h20"/></svg>
               </div>
@@ -1079,7 +1101,8 @@ nav.scrolled{background:rgba(5,5,5,.9);backdrop-filter:blur(16px);padding:18px 4
               </div>
             </div>
             <!-- Card 3 -->
-            <div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);border-radius:8px;padding:10px;position:relative">
+            <div class="mkt-card" id="mktC3" style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);border-radius:8px;padding:10px;position:relative">
+              <div class="mkt-added" id="mktA3">✓ 추가됨</div>
               <div style="width:100%;aspect-ratio:1;background:rgba(255,255,255,.02);border-radius:6px;display:flex;align-items:center;justify-content:center;margin-bottom:8px">
                 <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.25)" stroke-width="1.5"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M12 6v12M2 12h20"/></svg>
               </div>
@@ -1355,6 +1378,77 @@ if(archEl){
     },800);
   }})},{threshold:.1}).observe(archEl)
 }
+
+/* Marketplace cursor auto-purchase scenario */
+let mktDone=false;
+const mktEl=document.getElementById('mktGrid');
+if(mktEl){new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting&&!mktDone){mktDone=true;
+  const cursor=document.getElementById('mktCursor');
+  const cards=['mktC1','mktC2','mktC3'];
+  const badges=['mktA1','mktA2','mktA3'];
+  const toast=document.getElementById('mktToast');
+  let step=0;
+  function runMktLoop(){
+    step=0;
+    /* Reset */
+    cards.forEach(id=>{const c=document.getElementById(id);if(c)c.classList.remove('mkt-card-hover','mkt-clicking')});
+    badges.forEach(id=>{const b=document.getElementById(id);if(b)b.classList.remove('show')});
+    if(toast)toast.classList.remove('show');
+    if(cursor)cursor.classList.add('show');
+    /* Step 1: Move to card 1, hover */
+    setTimeout(()=>{
+      const c1=document.getElementById('mktC1');
+      if(cursor&&c1){cursor.style.left='18%';cursor.style.top='60%'}
+      if(c1)c1.classList.add('mkt-card-hover');
+    },500);
+    /* Step 2: Click card 1 */
+    setTimeout(()=>{
+      const c1=document.getElementById('mktC1');
+      if(cursor)cursor.classList.add('mkt-clicking');
+      setTimeout(()=>{if(cursor)cursor.classList.remove('mkt-clicking')},150);
+      if(c1)c1.classList.add('mkt-clicking');
+      setTimeout(()=>{
+        const b1=document.getElementById('mktA1');if(b1)b1.classList.add('show');
+      },200);
+    },1800);
+    /* Step 3: Move to card 2, hover */
+    setTimeout(()=>{
+      const c1=document.getElementById('mktC1');if(c1)c1.classList.remove('mkt-card-hover');
+      const c2=document.getElementById('mktC2');
+      if(cursor){cursor.style.left='50%';cursor.style.top='55%'}
+      if(c2)c2.classList.add('mkt-card-hover');
+    },3200);
+    /* Step 4: Click card 2 */
+    setTimeout(()=>{
+      if(cursor)cursor.classList.add('mkt-clicking');
+      setTimeout(()=>{if(cursor)cursor.classList.remove('mkt-clicking')},150);
+      const b2=document.getElementById('mktA2');if(b2)b2.classList.add('show');
+    },4200);
+    /* Step 5: Move to card 3, hover */
+    setTimeout(()=>{
+      const c2=document.getElementById('mktC2');if(c2)c2.classList.remove('mkt-card-hover');
+      const c3=document.getElementById('mktC3');
+      if(cursor){cursor.style.left='82%';cursor.style.top='65%'}
+      if(c3)c3.classList.add('mkt-card-hover');
+    },5500);
+    /* Step 6: Click card 3 */
+    setTimeout(()=>{
+      if(cursor)cursor.classList.add('mkt-clicking');
+      setTimeout(()=>{if(cursor)cursor.classList.remove('mkt-clicking')},150);
+      const b3=document.getElementById('mktA3');if(b3)b3.classList.add('show');
+    },6500);
+    /* Step 7: Toast */
+    setTimeout(()=>{
+      const c3=document.getElementById('mktC3');if(c3)c3.classList.remove('mkt-card-hover');
+      if(toast)toast.classList.add('show');
+      if(cursor)cursor.classList.remove('show');
+    },7500);
+    /* Step 8: Reset & loop */
+    setTimeout(()=>{if(toast)toast.classList.remove('show')},9500);
+    setTimeout(runMktLoop,11000);
+  }
+  runMktLoop();
+}})},{threshold:.15}).observe(mktEl)}
 
 /* #3 — App frame scan line trigger */
 document.querySelectorAll('.app-frame, .chat-frame').forEach(frame=>{
