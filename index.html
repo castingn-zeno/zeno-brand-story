@@ -591,11 +591,11 @@ nav.scrolled{background:rgba(5,5,5,.9);backdrop-filter:blur(16px);padding:18px 4
 
 /* ===== MARKETPLACE CURSOR MOTION ===== */
 .mkt-cursor{
-  position:absolute;width:16px;height:20px;z-index:10;pointer-events:none;
+  position:absolute;width:32px;height:40px;z-index:10;pointer-events:none;
   transition:all 1.2s cubic-bezier(.4,0,.2,1);opacity:0;
 }
 .mkt-cursor.show{opacity:1}
-.mkt-cursor svg{filter:drop-shadow(0 2px 4px rgba(0,0,0,.5))}
+.mkt-cursor svg{filter:drop-shadow(0 3px 8px rgba(0,0,0,.7));width:32px;height:40px}
 .mkt-card-hover{border-color:rgba(47,109,196,.4)!important;background:rgba(255,255,255,.08)!important;transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.3)}
 .mkt-card{transition:all .3s ease}
 @keyframes mktClick{0%{transform:scale(1)}50%{transform:scale(.9)}100%{transform:scale(1)}}
@@ -1070,7 +1070,7 @@ nav.scrolled{background:rgba(5,5,5,.9);backdrop-filter:blur(16px);padding:18px 4
           <!-- Product Grid (Coupa catalog style) -->
           <div id="mktGrid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:0 14px 14px;position:relative">
             <!-- Fake cursor -->
-            <div class="mkt-cursor" id="mktCursor"><svg width="16" height="20" viewBox="0 0 16 20" fill="none"><path d="M1 1L1 14.5L4.5 11L8 18L10.5 17L7 10L12 10L1 1Z" fill="white" stroke="rgba(0,0,0,.6)" stroke-width="1"/></svg></div>
+            <div class="mkt-cursor" id="mktCursor"><svg width="32" height="40" viewBox="0 0 16 20" fill="none"><path d="M1 1L1 14.5L4.5 11L8 18L10.5 17L7 10L12 10L1 1Z" fill="white" stroke="rgba(0,0,0,.6)" stroke-width="1"/></svg></div>
             <!-- Toast -->
             <div class="mkt-toast" id="mktToast">✓ 구매요청이 등록되었습니다</div>
             <!-- Card 1 -->
