@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+# URL은 서브도메인 확정 후 교체
+Sitemap: https://zeno.castingn.com/sitemap.xml
