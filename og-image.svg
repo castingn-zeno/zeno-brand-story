@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <radialGradient id="g1" cx="35%" cy="30%" r="50%">
+      <stop offset="0%" stop-color="#2F6DC4" stop-opacity="0.15"/>
+      <stop offset="100%" stop-color="#060D1F" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="g2" cx="70%" cy="75%" r="45%">
+      <stop offset="0%" stop-color="#D4A853" stop-opacity="0.1"/>
+      <stop offset="100%" stop-color="#060D1F" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="line" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="transparent"/>
+      <stop offset="50%" stop-color="#D4A853"/>
+      <stop offset="100%" stop-color="transparent"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="#060D1F"/>
+  <rect width="1200" height="630" fill="url(#g1)"/>
+  <rect width="1200" height="630" fill="url(#g2)"/>
+  <text x="600" y="220" text-anchor="middle" font-family="Georgia,serif" font-size="80" font-weight="700" fill="white" letter-spacing="16">ZENO</text>
+  <rect x="540" y="250" width="120" height="2" fill="url(#line)"/>
+  <text x="600" y="310" text-anchor="middle" font-family="sans-serif" font-size="32" font-weight="700" fill="rgba(255,255,255,0.9)">기업 구매 지출관리 OS</text>
+  <text x="600" y="355" text-anchor="middle" font-family="sans-serif" font-size="32" font-weight="700" fill="rgba(255,255,255,0.9)">흩어진 지출, 하나로</text>
+  <text x="600" y="410" text-anchor="middle" font-family="sans-serif" font-size="20" fill="rgba(255,255,255,0.5)">캐스팅엔 제노 | 국내 유일 BSM 솔루션</text>
+  <rect x="390" y="440" width="420" height="36" rx="18" fill="rgba(47,109,196,0.15)" stroke="rgba(47,109,196,0.3)" stroke-width="1"/>
+  <text x="600" y="464" text-anchor="middle" font-family="sans-serif" font-size="14" fill="#7BB8EE" letter-spacing="1">구매 지출관리 OS · 마켓플레이스 · AI 에이전트</text>
+</svg>
