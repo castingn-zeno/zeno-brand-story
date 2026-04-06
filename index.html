@@ -1543,12 +1543,19 @@ button{font-family:inherit;cursor:pointer}
     entries.forEach(e=>{
       if(e.isIntersecting){
         e.target.classList.add('v');
-        // Don't unobserve — allows re-entering
       }
     });
-  },{threshold:0.15, rootMargin:'0px 0px -40px 0px'});
+  },{threshold:0.05, rootMargin:'0px 0px 0px 0px'});
 
   document.querySelectorAll('.reveal,.reveal-fade').forEach(el=>io.observe(el));
+
+  /* Force-show elements already in viewport on load */
+  requestAnimationFrame(()=>{
+    document.querySelectorAll('.reveal,.reveal-fade').forEach(el=>{
+      const rect = el.getBoundingClientRect();
+      if(rect.top < window.innerHeight && rect.bottom > 0) el.classList.add('v');
+    });
+  });
 
   /* ---- Nav scroll ---- */
   const nav = document.getElementById('nav');
