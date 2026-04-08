@@ -93,8 +93,8 @@ nav.scrolled{background:rgba(5,5,5,.9);backdrop-filter:blur(16px);padding:18px 4
 .subnav{position:fixed;top:60px;left:0;right:0;z-index:998;padding:8px 16px;display:flex;justify-content:center;gap:2px;background:rgba(5,5,5,.85);backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,.05);transform:translateY(-100%);opacity:0;transition:all .4s var(--ease);overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
 .subnav::-webkit-scrollbar{display:none}
 .subnav::after{content:'›';position:sticky;right:0;flex-shrink:0;display:none;align-items:center;padding:0 4px 0 12px;font-size:1rem;color:rgba(255,255,255,.3);background:linear-gradient(90deg,transparent,rgba(5,5,5,.85) 40%);pointer-events:none}
-.subnav::before{content:'‹';position:sticky;left:0;flex-shrink:0;display:none;align-items:center;padding:0 12px 0 4px;font-size:1rem;color:rgba(255,255,255,.3);background:linear-gradient(270deg,transparent,rgba(5,5,5,.85) 40%);pointer-events:none;order:-1}
-@media(max-width:768px){.subnav::after,.subnav::before{display:flex}}
+.subnav::before{content:'‹';position:sticky;left:0;flex-shrink:0;display:none;align-items:center;padding:0 8px 0 0;font-size:1rem;color:rgba(255,255,255,.3);background:linear-gradient(270deg,transparent,rgba(5,5,5,.85) 40%);pointer-events:none;order:-1}
+@media(max-width:768px){.subnav::after,.subnav::before{display:flex}.subnav{justify-content:flex-start;padding:8px 8px}}
 .subnav.show{transform:translateY(0);opacity:1}
 .subnav a{font-size:.72rem;color:rgba(255,255,255,.5);text-decoration:none;padding:6px 12px;border-radius:100px;transition:all .2s;white-space:nowrap;flex-shrink:0}
 .subnav a:hover,.subnav a.active{color:#fff;background:rgba(255,255,255,.08)}
