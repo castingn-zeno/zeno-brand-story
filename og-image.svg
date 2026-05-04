@@ -1,30 +1,11 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
-  <defs>
-    <radialGradient id="g1" cx="35%" cy="30%" r="50%">
-      <stop offset="0%" stop-color="#2F6DC4" stop-opacity="0.15"/>
-      <stop offset="100%" stop-color="#060D1F" stop-opacity="0"/>
-    </radialGradient>
-    <radialGradient id="g2" cx="70%" cy="75%" r="45%">
-      <stop offset="0%" stop-color="#D4A853" stop-opacity="0.1"/>
-      <stop offset="100%" stop-color="#060D1F" stop-opacity="0"/>
-    </radialGradient>
-    <linearGradient id="line" x1="0%" y1="0%" x2="100%" y2="0%">
-      <stop offset="0%" stop-color="transparent"/>
-      <stop offset="50%" stop-color="#D4A853"/>
-      <stop offset="100%" stop-color="transparent"/>
-    </linearGradient>
-  </defs>
-  <rect width="1200" height="630" fill="#060D1F"/>
-  <rect width="1200" height="630" fill="url(#g1)"/>
-  <rect width="1200" height="630" fill="url(#g2)"/>
-  <!-- ZENO Symbol -->
-  <g transform="translate(545, 120) scale(0.35)">
-    <path fill="#7BB8EE" d="M 84.5 0 Q 92.4 -0.9 94 4.5 L 145 69.5 L 143.5 70 L 91.5 54 L 86.5 54 L 78 59.5 L 52 93.5 L 38.5 108 L 25.5 113 L 16.5 113 Q 6 111 0 104.5 L 80.5 2 L 84.5 0 Z"/>
-    <path fill="#7BB8EE" d="M 172.5 55 L 186.5 55 Q 195.9 57.1 201 63.5 L 118.5 167 Q 110.5 168.5 108 164.5 L 56 98.5 L 58.5 98 L 100.5 111 L 108.5 113 L 116.5 113 L 125 105.5 L 160.5 61 L 172.5 55 Z"/>
-  </g>
-  <text x="600" y="270" text-anchor="middle" font-family="Georgia,serif" font-size="80" font-weight="700" fill="white" letter-spacing="16">ZENO</text>
-  <rect x="540" y="290" width="120" height="2" fill="url(#line)"/>
-  <text x="600" y="350" text-anchor="middle" font-family="sans-serif" font-size="32" font-weight="700" fill="rgba(255,255,255,0.9)">기업 구매 지출관리 OS</text>
-  <text x="600" y="395" text-anchor="middle" font-family="sans-serif" font-size="32" font-weight="700" fill="rgba(255,255,255,0.9)">흩어진 지출, 하나로</text>
-  <text x="600" y="450" text-anchor="middle" font-family="sans-serif" font-size="20" fill="rgba(255,255,255,0.5)">캐스팅엔 제노 | 국내 유일 BSM 솔루션</text>
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="87.82 162.60 125.12 96.43">
+<path fill-rule="nonzero" fill="rgb(18.823242%, 34.901428%, 65.882874%)" fill-opacity="1" d="M 123.875 195.855469 L 144.707031 169.65625 C 145.546875 168.597656 147.152344 168.597656 147.992188 169.65625 L 161.8125 187.035156 L 147.867188 182.988281 C 146.636719 182.632812 145.3125 183.050781 144.515625 184.054688 L 135.691406 195.152344 C 132.746094 198.859375 127.238281 199.183594 123.875 195.855469 Z M 123.875 195.855469 "/>
+<path fill-rule="nonzero" fill="rgb(18.823242%, 34.901428%, 65.882874%)" fill-opacity="1" d="M 176.261719 185.304688 L 155.429688 211.503906 C 154.589844 212.5625 152.984375 212.5625 152.140625 211.503906 L 138.324219 194.125 L 152.265625 198.171875 C 153.5 198.527344 154.824219 198.109375 155.621094 197.101562 L 164.445312 186.007812 C 167.390625 182.300781 172.898438 181.976562 176.261719 185.304688 Z M 176.261719 185.304688 "/>
+<path fill-rule="nonzero" fill="rgb(19.607544%, 19.999695%, 20.391846%)" fill-opacity="1" d="M 160.449219 234.433594 L 160.449219 248.378906 L 154.25 248.378906 L 154.25 218.9375 L 172.847656 237.53125 L 172.847656 223.585938 L 179.046875 223.585938 L 179.046875 253.027344 Z M 160.449219 234.433594 "/>
+<path fill-rule="nonzero" fill="rgb(19.607544%, 19.999695%, 20.391846%)" fill-opacity="1" d="M 93.816406 248.378906 L 112.410156 229.785156 L 98.464844 229.785156 L 98.464844 223.585938 L 127.90625 223.585938 L 109.3125 242.179688 L 123.257812 242.179688 L 123.257812 248.378906 Z M 93.816406 248.378906 "/>
+<path fill-rule="nonzero" fill="rgb(19.607544%, 19.999695%, 20.391846%)" fill-opacity="1" d="M 151.152344 223.585938 L 126.359375 223.585938 L 126.359375 229.785156 L 151.152344 229.785156 Z M 151.152344 223.585938 "/>
+<path fill-rule="nonzero" fill="rgb(19.607544%, 19.999695%, 20.391846%)" fill-opacity="1" d="M 200.738281 229.785156 L 188.34375 229.785156 L 188.34375 242.179688 L 200.738281 242.179688 Z M 182.144531 223.585938 L 206.9375 223.585938 L 206.9375 248.378906 L 182.144531 248.378906 Z M 182.144531 223.585938 "/>
+<path fill-rule="nonzero" fill="rgb(19.607544%, 19.999695%, 20.391846%)" fill-opacity="1" d="M 150.054688 233.921875 L 153.152344 233.921875 L 149.117188 237.960938 L 94.527344 237.960938 L 98.730469 233.757812 Z M 150.054688 233.921875 "/>
+<path fill-rule="nonzero" fill="rgb(19.607544%, 19.999695%, 20.391846%)" fill-opacity="1" d="M 151.152344 242.179688 L 126.359375 242.179688 L 126.359375 248.378906 L 151.152344 248.378906 Z M 151.152344 242.179688 "/>
 </svg>
